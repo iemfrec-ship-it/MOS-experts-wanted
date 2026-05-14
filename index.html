@@ -461,8 +461,8 @@ body::before {
   transition: all 0.15s;
 }
 .tf-btn:hover { border-color: var(--primary); color: var(--primary); }
-.tf-btn.selected-true { background: rgba(0,255,136,0.15); border-color: var(--success); color: var(--success); }
-.tf-btn.selected-false { background: rgba(255,51,85,0.15); border-color: var(--danger); color: var(--danger); }
+.tf-btn.selected-neutral { background: rgba(0,212,255,0.15); border-color: var(--primary); color: var(--primary); }
+
 .tf-btn.correct { background: rgba(0,255,136,0.2); border-color: var(--success); color: var(--success); }
 .tf-btn.wrong { background: rgba(255,51,85,0.2); border-color: var(--danger); color: var(--danger); }
 
@@ -1552,7 +1552,7 @@ body::before {
       <details style="margin-bottom:10px;">
         <summary style="cursor:pointer;font-family:var(--font-mono);font-size:0.8rem;color:var(--warning);padding:8px 0;">▶ Level 2 — Reading Comprehension Keys</summary>
         <div style="padding:12px;font-family:var(--font-mono);font-size:0.8rem;color:var(--text-muted);line-height:2;">
-          <strong style="color:var(--text);">Exercise 1 (T/F):</strong> 1-T · 2-F · 3-T · 4-T · 5-T · 6-T · 7-T · 8-T · 9-F · 10-T<br>
+          <strong style="color:var(--text);">Exercise 1 (T/F):</strong> 1-T · 2-T · 3-F · 4-T · 5-F · 6-T · 7-F · 8-F · 9-T · 10-F<br>
           <strong style="color:var(--text);">Exercise 2 (QCM):</strong> 1-C · 2-D · 3-C · 4-B · 5-D · 6-C · 7-D · 8-D
         </div>
       </details>
@@ -1634,15 +1634,15 @@ const L1_Q2 = [
 
 const L2_TF = [
   { q: "The officer found the unlocked door while doing his regular rounds.", ans: true },
-  { q: "The side entrance showed signs of having been broken into.", ans: false },
-  { q: "The officer waited for colleagues to arrive before going inside.", ans: true },
+  { q: "The side entrance showed no trace of having been forced open.", ans: true },
+  { q: "The officer went inside straight away, without calling for backup.", ans: false },
   { q: "One item of electronic equipment was reported missing after the search.", ans: true },
-  { q: "The site manager was reached in the early hours of the morning, after midnight.", ans: true },
-  { q: "The surveillance cameras had been deliberately deactivated for more than 60 minutes.", ans: true },
-  { q: "The emergency services took over half an hour to get to the site.", ans: true },
-  { q: "Access to the storage room is restricted to a small number of authorised employees.", ans: true },
-  { q: "The event took place during the working week.", ans: false },
-  { q: "Security measures were put back in place before the officers left the scene.", ans: true }
+  { q: "The site manager was contacted while it was still before midnight.", ans: false },
+  { q: "The two surveillance cameras had both been out of action for over an hour.", ans: true },
+  { q: "The police reached the site less than 30 minutes after being called.", ans: false },
+  { q: "More than three employees had a key to the storage room.", ans: false },
+  { q: "The event took place on a Sunday.", ans: true },
+  { q: "The entrance was left unsecured when the officers finished.", ans: false }
 ];
 
 const L2_Q2 = [
@@ -1714,8 +1714,8 @@ function renderTF(questions, containerId) {
 }
 
 function selectTF(i, val) {
-  document.getElementById(`tf-${i}-T`).className = 'tf-btn' + (val==='T' ? ' selected-true' : '');
-  document.getElementById(`tf-${i}-F`).className = 'tf-btn' + (val==='F' ? ' selected-false' : '');
+  document.getElementById(`tf-${i}-T`).className = 'tf-btn' + (val==='T' ? ' selected-neutral' : '');
+  document.getElementById(`tf-${i}-F`).className = 'tf-btn' + (val==='F' ? ' selected-neutral' : '');
 }
 
 function renderVocab(vocabs, containerId) {
@@ -1756,7 +1756,7 @@ function scoreTF() {
   L2_TF.forEach((q, i) => {
     const tBtn = document.getElementById(`tf-${i}-T`);
     const fBtn = document.getElementById(`tf-${i}-F`);
-    const selected = tBtn.classList.contains('selected-true') ? true : fBtn.classList.contains('selected-false') ? false : null;
+    const selected = tBtn.classList.contains('selected-neutral') ? true : fBtn.classList.contains('selected-neutral') ? false : null;
     if (selected === null) { tBtn.disabled = true; fBtn.disabled = true; return; }
     const isCorrect = selected === q.ans;
     if (isCorrect) {
@@ -1858,7 +1858,7 @@ function updateHUD() {
   for (let i = 0; i < 5; i++) {
     const d = document.createElement('div');
     d.className = 'fragment-dot' + (STATE.fragmentsUnlocked[i] ? ' unlocked' : '');
-    d.title = STATE.fragmentsUnlocked[i] ? FRAGMENTS[i] : `Fragment ${i+1}`;
+    d.title = STATE.fragmentsUnlocked[i] ? `Fragment ${i+1} — unlocked` : `Fragment ${i+1} — locked`;
     frag.appendChild(d);
   }
 }
@@ -1942,7 +1942,7 @@ function goToFinal() {
   const disp = document.getElementById('fragments-display');
   disp.innerHTML = '';
   FRAGMENTS.forEach((f, i) => {
-    disp.innerHTML += `<div class="fragment-chip"><div class="fragment-chip-num">FRAGMENT ${i+1}</div><div class="fragment-chip-word">${STATE.fragmentsUnlocked[i] ? f : '????'}</div></div>`;
+    disp.innerHTML += `<div class="fragment-chip"><div class="fragment-chip-num">FRAGMENT ${i+1}</div><div class="fragment-chip-word">${STATE.fragmentsUnlocked[i] ? '🔓' : '????'}</div></div>`;
   });
 }
 
@@ -1957,7 +1957,7 @@ function submitL1Ex1() {
     score, 12, 10, 50, -10, null, 'l1-ex1-advance', 'l1-ex1-next', 'L1 Exercise 1');
   if (score >= 10) {
     STATE.fragmentsUnlocked[0] = true; STATE.fragments[0] = FRAGMENTS[0]; updateHUD();
-    document.getElementById('l1-ex1-indice').innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 1 RECOVERED</div><div class="indice-word">${FRAGMENTS[0]}</div></div>`;
+    document.getElementById('l1-ex1-indice').innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 1 RECOVERED</div><div class="indice-word" style="font-size:2.5rem;letter-spacing:8px;">🔓 ✦ ✦ ✦ ✦</div><div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);margin-top:8px;letter-spacing:2px;">NOTE IT DOWN — DO NOT SHARE</div></div>`;
   }
 }
 
@@ -1981,7 +1981,7 @@ function submitL1Ex2() {
   const ptsEl = document.getElementById('l1-ex2-pts');
   ptsEl.className = 'points-change ' + (pts >= 0 ? 'gain' : 'loss');
   ptsEl.textContent = (pts >= 0 ? '+' : '') + pts + ' POINTS';
-  document.getElementById('l1-ex2-indice').innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 1 RECOVERED</div><div class="indice-word">${FRAGMENTS[0]}</div></div>`;
+  document.getElementById('l1-ex2-indice').innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 1 RECOVERED</div><div class="indice-word" style="font-size:2.5rem;letter-spacing:8px;">🔓 ✦ ✦ ✦ ✦</div><div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);margin-top:8px;letter-spacing:2px;">NOTE IT DOWN — DO NOT SHARE</div></div>`;
   panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
@@ -2002,7 +2002,7 @@ function submitL2Ex1() {
   ptsEl.textContent = (pts >= 0 ? '+' : '') + pts + ' POINTS';
   if (pass) {
     STATE.fragmentsUnlocked[1] = true; STATE.fragments[1] = FRAGMENTS[1]; updateHUD();
-    document.getElementById('l2-ex1-indice').innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 2 RECOVERED</div><div class="indice-word">${FRAGMENTS[1]}</div></div>`;
+    document.getElementById('l2-ex1-indice').innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 2 RECOVERED</div><div class="indice-word" style="font-size:2.5rem;letter-spacing:8px;">🔓 ✦ ✦ ✦ ✦</div><div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);margin-top:8px;letter-spacing:2px;">NOTE IT DOWN — DO NOT SHARE</div></div>`;
     document.getElementById('l2-ex1-advance').style.display = 'flex';
   } else {
     document.getElementById('l2-ex1-next').style.display = 'flex';
@@ -2030,7 +2030,7 @@ function submitL2Ex2() {
   const ptsEl = document.getElementById('l2-ex2-pts');
   ptsEl.className = 'points-change ' + (pts >= 0 ? 'gain' : 'loss');
   ptsEl.textContent = (pts >= 0 ? '+' : '') + pts + ' POINTS';
-  document.getElementById('l2-ex2-indice').innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 2 RECOVERED</div><div class="indice-word">${FRAGMENTS[1]}</div></div>`;
+  document.getElementById('l2-ex2-indice').innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 2 RECOVERED</div><div class="indice-word" style="font-size:2.5rem;letter-spacing:8px;">🔓 ✦ ✦ ✦ ✦</div><div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);margin-top:8px;letter-spacing:2px;">NOTE IT DOWN — DO NOT SHARE</div></div>`;
   panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
@@ -2065,7 +2065,7 @@ function submitL3Ex1() {
   ptsEl.textContent = (pts >= 0 ? '+' : '') + pts + ' POINTS';
   if (pass) {
     STATE.fragmentsUnlocked[2] = true; STATE.fragments[2] = FRAGMENTS[2]; updateHUD();
-    document.getElementById('l3-ex1-indice').innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 3 RECOVERED</div><div class="indice-word">${FRAGMENTS[2]}</div></div>`;
+    document.getElementById('l3-ex1-indice').innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 3 RECOVERED</div><div class="indice-word" style="font-size:2.5rem;letter-spacing:8px;">🔓 ✦ ✦ ✦ ✦</div><div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);margin-top:8px;letter-spacing:2px;">NOTE IT DOWN — DO NOT SHARE</div></div>`;
     document.getElementById('l3-ex1-advance').style.display = 'flex';
   } else {
     document.getElementById('l3-ex1-next').style.display = 'flex';
@@ -2095,7 +2095,7 @@ function submitL3Ex2() {
   const ptsEl = document.getElementById('l3-ex2-pts');
   ptsEl.className = 'points-change ' + (pts >= 0 ? 'gain' : 'loss');
   ptsEl.textContent = (pts >= 0 ? '+' : '') + pts + ' POINTS';
-  document.getElementById('l3-ex2-indice').innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 3 RECOVERED</div><div class="indice-word">${FRAGMENTS[2]}</div></div>`;
+  document.getElementById('l3-ex2-indice').innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 3 RECOVERED</div><div class="indice-word" style="font-size:2.5rem;letter-spacing:8px;">🔓 ✦ ✦ ✦ ✦</div><div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);margin-top:8px;letter-spacing:2px;">NOTE IT DOWN — DO NOT SHARE</div></div>`;
   panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
@@ -2117,7 +2117,7 @@ function submitL4Ex1() {
   ptsEl.textContent = (pts >= 0 ? '+' : '') + pts + ' POINTS';
   if (pass) {
     STATE.fragmentsUnlocked[3] = true; STATE.fragments[3] = FRAGMENTS[3]; updateHUD();
-    document.getElementById('l4-ex1-indice').innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 4 RECOVERED</div><div class="indice-word">${FRAGMENTS[3]}</div></div>`;
+    document.getElementById('l4-ex1-indice').innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 4 RECOVERED</div><div class="indice-word" style="font-size:2.5rem;letter-spacing:8px;">🔓 ✦ ✦ ✦ ✦</div><div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);margin-top:8px;letter-spacing:2px;">NOTE IT DOWN — DO NOT SHARE</div></div>`;
     document.getElementById('l4-ex1-advance').style.display = 'flex';
   } else {
     document.getElementById('l4-ex1-next').style.display = 'flex';
@@ -2147,7 +2147,7 @@ function submitL4Ex2() {
   const ptsEl = document.getElementById('l4-ex2-pts');
   ptsEl.className = 'points-change ' + (pts >= 0 ? 'gain' : 'loss');
   ptsEl.textContent = (pts >= 0 ? '+' : '') + pts + ' POINTS';
-  document.getElementById('l4-ex2-indice').innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 4 RECOVERED</div><div class="indice-word">${FRAGMENTS[3]}</div></div>`;
+  document.getElementById('l4-ex2-indice').innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 4 RECOVERED</div><div class="indice-word" style="font-size:2.5rem;letter-spacing:8px;">🔓 ✦ ✦ ✦ ✦</div><div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);margin-top:8px;letter-spacing:2px;">NOTE IT DOWN — DO NOT SHARE</div></div>`;
   panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
@@ -2169,14 +2169,14 @@ function submitL5Ex(exNum, scoreInputId, panelId, scoreId, labelId, ptsId, indic
   ptsEl.textContent = (pts >= 0 ? '+' : '') + pts + ' POINTS';
   if (pass) {
     STATE.fragmentsUnlocked[4] = true; STATE.fragments[4] = FRAGMENTS[4]; updateHUD();
-    document.getElementById(indiceId).innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 5 RECOVERED</div><div class="indice-word">${FRAGMENTS[4]}</div></div>`;
+    document.getElementById(indiceId).innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 5 RECOVERED</div><div class="indice-word" style="font-size:2.5rem;letter-spacing:8px;">🔓 ✦ ✦ ✦ ✦</div><div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);margin-top:8px;letter-spacing:2px;">NOTE IT DOWN — DO NOT SHARE</div></div>`;
     document.getElementById(advanceId).style.display = 'flex';
   } else if (nextId) {
     document.getElementById(nextId).style.display = 'flex';
   } else {
     // ex3 failed — still unlock
     STATE.fragmentsUnlocked[4] = true; STATE.fragments[4] = FRAGMENTS[4]; updateHUD();
-    document.getElementById(indiceId).innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 5 RECOVERED</div><div class="indice-word">${FRAGMENTS[4]}</div></div>`;
+    document.getElementById(indiceId).innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 5 RECOVERED</div><div class="indice-word" style="font-size:2.5rem;letter-spacing:8px;">🔓 ✦ ✦ ✦ ✦</div><div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);margin-top:8px;letter-spacing:2px;">NOTE IT DOWN — DO NOT SHARE</div></div>`;
     document.getElementById(advanceId).style.display = 'flex';
   }
   panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
