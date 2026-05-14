@@ -1016,6 +1016,24 @@ body::before {
           <div id="student-error" class="alert alert-error"></div>
         </div>
       </div>
+      <div style="text-align:center;margin-top:20px;">
+        <button onclick="showPage('page-rgpd')" style="background:none;border:none;font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:#94a3b8;letter-spacing:2px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;">🔒 Conditions RGPD</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PAGE: RGPD ==================== -->
+<div id="page-rgpd" class="page">
+  <div style="max-width:700px;margin:0 auto;padding:60px 20px;width:100%;display:flex;flex-direction:column;align-items:center;">
+    <div style="background:#3a3d47;border:1px solid rgba(0,212,255,0.25);border-radius:12px;padding:40px;width:100%;">
+      <div style="font-family:'Orbitron',monospace;font-size:1rem;letter-spacing:3px;color:#00d4ff;margin-bottom:6px;">CONDITIONS RGPD</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:#ffcc00;letter-spacing:2px;margin-bottom:30px;">⚠ PAGE EN COURS DE VALIDATION</div>
+      <div style="background:rgba(255,204,0,0.08);border:1px solid rgba(255,204,0,0.3);border-radius:8px;padding:20px;margin-bottom:30px;">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.8rem;color:#ffcc00;margin-bottom:10px;">NOTICE</div>
+        <div style="font-size:0.95rem;color:#94a3b8;line-height:1.8;">Cette page est en cours de rédaction et sera complétée une fois les conditions RGPD validées par l'établissement. Merci de revenir ultérieurement.</div>
+      </div>
+      <button onclick="showPage('page-home')" style="background:transparent;border:1px solid rgba(0,212,255,0.25);color:#94a3b8;font-family:'Orbitron',monospace;font-size:0.7rem;letter-spacing:2px;padding:10px 20px;border-radius:6px;cursor:pointer;">← RETOUR</button>
     </div>
   </div>
 </div>
@@ -1082,7 +1100,7 @@ body::before {
         <div class="timer-progress"><div class="timer-progress-bar" id="l1-tp1" style="width:100%"></div></div>
       </div>
       <div id="l1-q1-container"></div>
-      <button class="btn btn-primary" onclick="submitL1Ex1()" id="l1-ex1-submit">Submit Answers</button>
+      <button class="btn btn-primary" onclick="defer(submitL1Ex1)" id="l1-ex1-submit">Submit Answers</button>
       <div class="result-panel" id="l1-ex1-result">
         <div class="result-score-big" id="l1-ex1-score"></div>
         <div class="result-label" id="l1-ex1-label"></div>
@@ -1101,7 +1119,7 @@ body::before {
       </div>
       <div class="exercise-prompt">"First attempt incomplete. A second assessment has been loaded. Take your time — but remember, every failure has a cost."</div>
       <div id="l1-q2-container"></div>
-      <button class="btn btn-primary" onclick="submitL1Ex2()">Submit Answers</button>
+      <button class="btn btn-primary" onclick="defer(submitL1Ex2)">Submit Answers</button>
       <div class="result-panel" id="l1-ex2-result">
         <div class="result-score-big" id="l1-ex2-score"></div>
         <div class="result-label" id="l1-ex2-label"></div>
@@ -1145,7 +1163,7 @@ body::before {
         <div class="incident-status">Status: Under Investigation</div>
       </div>
       <div id="l2-tf-container"></div>
-      <button class="btn btn-primary" onclick="submitL2Ex1()" style="margin-top:16px;">Submit Answers</button>
+      <button class="btn btn-primary" onclick="defer(submitL2Ex1)" style="margin-top:16px;">Submit Answers</button>
       <div class="result-panel" id="l2-ex1-result">
         <div class="result-score-big" id="l2-ex1-score"></div>
         <div class="result-label" id="l2-ex1-label"></div>
@@ -1172,7 +1190,7 @@ body::before {
         <div class="incident-status">Status: Closed</div>
       </div>
       <div id="l2-q2-container"></div>
-      <button class="btn btn-primary" onclick="submitL2Ex2()" style="margin-top:16px;">Submit Answers</button>
+      <button class="btn btn-primary" onclick="defer(submitL2Ex2)" style="margin-top:16px;">Submit Answers</button>
       <div class="result-panel" id="l2-ex2-result">
         <div class="result-score-big" id="l2-ex2-score"></div>
         <div class="result-label" id="l2-ex2-label"></div>
@@ -1227,7 +1245,7 @@ body::before {
         <span class="score-input-label">TEACHER VALIDATION CODE (1–10) :</span>
         <input type="number" class="score-input" id="l3-score1" min="1" max="10" placeholder="—">
       </div>
-      <button class="btn btn-primary" onclick="submitL3Ex1()">Validate Score</button>
+      <button class="btn btn-primary" onclick="defer(submitL3Ex1)">Validate Score</button>
       <div class="result-panel" id="l3-ex1-result">
         <div class="result-score-big" id="l3-ex1-score"></div>
         <div class="result-label" id="l3-ex1-label"></div>
@@ -1265,7 +1283,7 @@ body::before {
         <span class="score-input-label">TEACHER VALIDATION CODE (1–10) :</span>
         <input type="number" class="score-input" id="l3-score2" min="1" max="10" placeholder="—">
       </div>
-      <button class="btn btn-primary" onclick="submitL3Ex2()">Validate Score</button>
+      <button class="btn btn-primary" onclick="defer(submitL3Ex2)">Validate Score</button>
       <div class="result-panel" id="l3-ex2-result">
         <div class="result-score-big" id="l3-ex2-score"></div>
         <div class="result-label" id="l3-ex2-label"></div>
@@ -1301,11 +1319,11 @@ body::before {
       <div class="exercise-prompt">"Encrypted fragments loaded. You have 8 minutes to decode."</div>
       <div id="l4-timer1" class="timer-bar">
         <span class="timer-label">TIME</span>
-        <span class="timer-display" id="l4-td1">8:00</span>
+        <span class="timer-display" id="l4-td1">6:00</span>
         <div class="timer-progress"><div class="timer-progress-bar" id="l4-tp1" style="width:100%"></div></div>
       </div>
       <div id="l4-v1-container"></div>
-      <button class="btn btn-primary" onclick="submitL4Ex1()" style="margin-top:16px;">Submit Answers</button>
+      <button class="btn btn-primary" onclick="defer(submitL4Ex1)" style="margin-top:16px;">Submit Answers</button>
       <div class="result-panel" id="l4-ex1-result">
         <div class="result-score-big" id="l4-ex1-score"></div>
         <div class="result-label" id="l4-ex1-label"></div>
@@ -1328,7 +1346,7 @@ body::before {
         <div class="timer-progress"><div class="timer-progress-bar" id="l4-tp2" style="width:100%"></div></div>
       </div>
       <div id="l4-v2-container"></div>
-      <button class="btn btn-primary" onclick="submitL4Ex2()" style="margin-top:16px;">Submit Answers</button>
+      <button class="btn btn-primary" onclick="defer(submitL4Ex2)" style="margin-top:16px;">Submit Answers</button>
       <div class="result-panel" id="l4-ex2-result">
         <div class="result-score-big" id="l4-ex2-score"></div>
         <div class="result-label" id="l4-ex2-label"></div>
@@ -1384,7 +1402,7 @@ body::before {
         <span class="score-input-label">TEACHER VALIDATION CODE (1–10) :</span>
         <input type="number" class="score-input" id="l5-score1" min="1" max="10" placeholder="—">
       </div>
-      <button class="btn btn-primary" onclick="submitL5Ex1()">Validate Score</button>
+      <button class="btn btn-primary" onclick="defer(submitL5Ex1)">Validate Score</button>
       <div class="result-panel" id="l5-ex1-result">
         <div class="result-score-big" id="l5-ex1-score"></div>
         <div class="result-label" id="l5-ex1-label"></div>
@@ -1423,7 +1441,7 @@ body::before {
         <span class="score-input-label">TEACHER VALIDATION CODE (1–10) :</span>
         <input type="number" class="score-input" id="l5-score2" min="1" max="10" placeholder="—">
       </div>
-      <button class="btn btn-primary" onclick="submitL5Ex2()">Validate Score</button>
+      <button class="btn btn-primary" onclick="defer(submitL5Ex2)">Validate Score</button>
       <div class="result-panel" id="l5-ex2-result">
         <div class="result-score-big" id="l5-ex2-score"></div>
         <div class="result-label" id="l5-ex2-label"></div>
@@ -1462,7 +1480,7 @@ body::before {
         <span class="score-input-label">TEACHER VALIDATION CODE (1–10) :</span>
         <input type="number" class="score-input" id="l5-score3" min="1" max="10" placeholder="—">
       </div>
-      <button class="btn btn-primary" onclick="submitL5Ex3()">Validate Score</button>
+      <button class="btn btn-primary" onclick="defer(submitL5Ex3)">Validate Score</button>
       <div class="result-panel" id="l5-ex3-result">
         <div class="result-score-big" id="l5-ex3-score"></div>
         <div class="result-label" id="l5-ex3-label"></div>
@@ -1534,7 +1552,7 @@ body::before {
       <details style="margin-bottom:10px;">
         <summary style="cursor:pointer;font-family:var(--font-mono);font-size:0.8rem;color:var(--warning);padding:8px 0;">▶ Level 2 — Reading Comprehension Keys</summary>
         <div style="padding:12px;font-family:var(--font-mono);font-size:0.8rem;color:var(--text-muted);line-height:2;">
-          <strong style="color:var(--text);">Exercise 1 (T/F):</strong> 1-T · 2-F · 3-F · 4-T · 5-F · 6-T · 7-F · 8-T · 9-F · 10-F<br>
+          <strong style="color:var(--text);">Exercise 1 (T/F):</strong> 1-T · 2-F · 3-T · 4-T · 5-T · 6-T · 7-T · 8-T · 9-F · 10-T<br>
           <strong style="color:var(--text);">Exercise 2 (QCM):</strong> 1-C · 2-D · 3-C · 4-B · 5-D · 6-C · 7-D · 8-D
         </div>
       </details>
@@ -1562,6 +1580,9 @@ body::before {
 <div id="print-area" style="display:none;"></div>
 
 <script>
+// INP fix: yield to browser before heavy work
+function defer(fn) { setTimeout(fn, 0); }
+
 // ===================== STATE =====================
 const STATE = {
   team: '',
@@ -1612,27 +1633,27 @@ const L1_Q2 = [
 ];
 
 const L2_TF = [
-  { q: "Officer Kowalski discovered the open door during a scheduled patrol.", ans: true },
-  { q: "The side entrance door had been forced open.", ans: false },
-  { q: "Officer Kowalski entered the building alone immediately after noticing the door.", ans: false },
-  { q: "A laptop was found to be missing from the storage room.", ans: true },
-  { q: "The site manager was contacted before midnight.", ans: false },
-  { q: "Both CCTV cameras had been switched off for over an hour.", ans: true },
-  { q: "The police arrived on site within 30 minutes of being called.", ans: false },
-  { q: "The storage room can only be accessed by three members of staff.", ans: true },
-  { q: "The incident was reported on a weekday.", ans: false },
-  { q: "The entrance door was left unsecured at the end of the intervention.", ans: false }
+  { q: "The officer found the unlocked door while doing his regular rounds.", ans: true },
+  { q: "The side entrance showed signs of having been broken into.", ans: false },
+  { q: "The officer waited for colleagues to arrive before going inside.", ans: true },
+  { q: "One item of electronic equipment was reported missing after the search.", ans: true },
+  { q: "The site manager was reached in the early hours of the morning, after midnight.", ans: true },
+  { q: "The surveillance cameras had been deliberately deactivated for more than 60 minutes.", ans: true },
+  { q: "The emergency services took over half an hour to get to the site.", ans: true },
+  { q: "Access to the storage room is restricted to a small number of authorised employees.", ans: true },
+  { q: "The event took place during the working week.", ans: false },
+  { q: "Security measures were put back in place before the officers left the scene.", ans: true }
 ];
 
 const L2_Q2 = [
-  { q: "Who first informed Officer Barnes about the incident?", opts: ["His supervisor at the control room","Another security officer","A member of the public","The site manager"], ans: 2 },
-  { q: "Where did the incident take place?", opts: ["At the main entrance","In the car park","On the ground floor","Near the food court on the first floor"], ans: 3 },
-  { q: "What was the condition of the casualty when Officer Barnes arrived?", opts: ["Unconscious and not breathing","Standing but in pain","Conscious but disoriented","Already being treated by a doctor"], ans: 2 },
-  { q: "How long did it take for the first aider to arrive?", opts: ["Immediately","Within three minutes","Five minutes","Ten minutes"], ans: 1 },
-  { q: "Why did Officer Barnes secure a perimeter around the casualty?", opts: ["To identify potential suspects in the crowd","To wait for the ambulance without moving","To film the scene for the CCTV record","To prevent crowding and ensure clear access for emergency services"], ans: 3 },
-  { q: "How long did it take for the ambulance to arrive after being called?", opts: ["4 minutes","8 minutes","12 minutes","20 minutes"], ans: 2 },
-  { q: "When did Officer Barnes submit his written report?", opts: ["The following morning","As soon as the ambulance arrived","At the start of his next shift","Before the end of his shift"], ans: 3 },
-  { q: "What conclusion was reached regarding suspicious activity?", opts: ["A suspect was identified and reported to police","The incident was linked to a previous case","Further investigation was requested","No suspicious activity was recorded"], ans: 3 }
+  { q: "Who first alerted Officer Barnes to the situation?", opts: ["His team leader at the control room","A fellow security agent","An ordinary person at the shopping centre","The building manager"], ans: 2 },
+  { q: "In which area of the building did the emergency occur?", opts: ["Just inside the front entrance","In the outdoor parking zone","At ground level near the tills","On an upper floor close to where food is sold"], ans: 3 },
+  { q: "How would you describe the woman's state when the officer reached her?", opts: ["Unresponsive and not breathing","On her feet but clearly suffering","Awake but unable to think clearly","Already under medical care"], ans: 2 },
+  { q: "How quickly did the trained first aider get to the scene?", opts: ["Straight away, within seconds","In less than three minutes","About five minutes later","After around ten minutes"], ans: 1 },
+  { q: "What was the officer's reason for keeping bystanders away from the casualty?", opts: ["To check whether anyone nearby looked suspicious","To remain close to the victim while waiting","To keep a visual record of the scene","To maintain space and allow emergency responders easy access"], ans: 3 },
+  { q: "How much time passed between calling for an ambulance and its arrival?", opts: ["Around four minutes","Approximately eight minutes","Roughly twelve minutes","About twenty minutes"], ans: 2 },
+  { q: "At what point did Officer Barnes hand in his written account of the events?", opts: ["The next day when he returned to work","Right after the ambulance left","At the beginning of his following shift","While still on duty, before going home"], ans: 3 },
+  { q: "What did investigators determine about the possibility of criminal involvement?", opts: ["An individual was identified and handed to the authorities","The event appeared connected to a past case","More enquiries were deemed necessary","There was no indication of any wrongdoing"], ans: 3 }
 ];
 
 const L4_V1 = [
@@ -1909,7 +1930,7 @@ function goToLevel(n) {
     renderVocab(L4_V1, 'l4-v1-container');
     renderVocab(L4_V2, 'l4-v2-container');
     showPage('page-level4');
-    startTimer(480, 'l4-td1', 'l4-tp1', 'l4ex1', () => {});
+    startTimer(360, 'l4-td1', 'l4-tp1', 'l4ex1', () => {});
   } else if (n === 5) {
     drawL5Agent(1);
     showPage('page-level5');
@@ -1933,8 +1954,8 @@ function submitL1Ex1() {
   const timerPenalty = STATE.timerExpired.l1;
   if (timerPenalty) { STATE.score -= 0; } // already deducted in timer
   showResult('l1-ex1-result','l1-ex1-score','l1-ex1-label','l1-ex1-pts','l1-ex1-indice',
-    score, 12, 8, 50, -10, null, 'l1-ex1-advance', 'l1-ex1-next', 'L1 Exercise 1');
-  if (score >= 8) {
+    score, 12, 10, 50, -10, null, 'l1-ex1-advance', 'l1-ex1-next', 'L1 Exercise 1');
+  if (score >= 10) {
     STATE.fragmentsUnlocked[0] = true; STATE.fragments[0] = FRAGMENTS[0]; updateHUD();
     document.getElementById('l1-ex1-indice').innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 1 RECOVERED</div><div class="indice-word">${FRAGMENTS[0]}</div></div>`;
   }
@@ -1947,7 +1968,7 @@ function showL1Ex2() {
 
 function submitL1Ex2() {
   const score = scoreQCM(L1_Q2, 'l1-q2-container');
-  const pass = score >= 8;
+  const pass = score >= 10;
   const pts = pass ? 50 : -10;
   STATE.score += pts; updateHUD();
   STATE.fragmentsUnlocked[0] = true; STATE.fragments[0] = FRAGMENTS[0]; updateHUD();
@@ -1996,7 +2017,7 @@ function showL2Ex2() {
 
 function submitL2Ex2() {
   const score = scoreQCM(L2_Q2, 'l2-q2-container');
-  const pass = score >= 8;
+  const pass = score >= 7;
   const pts = pass ? 50 : -10;
   STATE.score += pts; updateHUD();
   STATE.fragmentsUnlocked[1] = true; STATE.fragments[1] = FRAGMENTS[1]; updateHUD();
@@ -2244,7 +2265,8 @@ function printReport() {
   <div class="frags">${FRAGMENTS.map((f,i)=>`<div class="frag">${STATE.fragmentsUnlocked[i]?f:'???'}</div>`).join('')}</div>
   <p class="total">TOTAL SCORE : ${STATE.score} POINTS</p>
   <br><p style="font-size:0.75rem;color:#999">Generated by Experts Wanted — SecureForce Ltd. &copy; 2024</p>
-  </body></html>`);
+  <div style="position:fixed;bottom:8px;right:14px;font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:rgba(148,163,184,0.35);letter-spacing:2px;pointer-events:none;z-index:50;">Créé par C. Iemfre</div>
+</body></html>`);
   w.document.close();
   w.print();
 }
@@ -2256,5 +2278,6 @@ document.querySelectorAll('.member-input').forEach(inp => {
   });
 });
 </script>
+<div style="position:fixed;bottom:8px;right:14px;font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:rgba(148,163,184,0.35);letter-spacing:2px;pointer-events:none;z-index:50;">Créé par C. Iemfre</div>
 </body>
 </html>
