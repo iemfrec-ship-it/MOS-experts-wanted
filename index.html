@@ -1,0 +1,2260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EXPERTS WANTED — SecureForce Ltd.</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #00d4ff;
+  --secondary: #ff6b00;
+  --success: #00ff88;
+  --danger: #ff3355;
+  --warning: #ffcc00;
+  --bg-dark: #2b2d35;
+  --bg-card: #3a3d47;
+  --bg-card2: #444752;
+  --border: rgba(0,212,255,0.25);
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --font-display: 'Orbitron', monospace;
+  --font-body: 'Rajdhani', sans-serif;
+  --font-mono: 'Share Tech Mono', monospace;
+}
+
+/* LEVEL THEMES */
+.theme-l1 { --level-color: #00d4ff; --level-bg: #2e3340; --level-accent: #3a5070; }
+.theme-l2 { --level-color: #ffcc00; --level-bg: #38352a; --level-accent: #5a4e20; }
+.theme-l3 { --level-color: #ff6b00; --level-bg: #3a2e28; --level-accent: #5a3a20; }
+.theme-l4 { --level-color: #cc44ff; --level-bg: #332e3a; --level-accent: #4a2e5a; }
+.theme-l5 { --level-color: #ff3355; --level-bg: #3a2e30; --level-accent: #5a2030; }
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-dark);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* SCANLINES OVERLAY */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* GRID BACKGROUND */
+.grid-bg {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page { display: none; min-height: 100vh; position: relative; z-index: 1; }
+.page.active { display: flex; flex-direction: column; }
+
+/* ===================== HEADER / HUD ===================== */
+#hud {
+  display: none;
+  position: sticky;
+  top: 0;
+  background: rgba(10,14,26,0.95);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 20px;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+}
+#hud.visible { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+
+.hud-team { font-family: var(--font-display); font-size: 0.75rem; color: var(--primary); letter-spacing: 2px; }
+.hud-level { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); }
+.hud-score {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--warning);
+  background: rgba(255,204,0,0.1);
+  border: 1px solid rgba(255,204,0,0.3);
+  padding: 4px 12px;
+  border-radius: 4px;
+}
+
+.hud-fragments {
+  display: flex;
+  gap: 6px;
+}
+.fragment-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: transparent;
+  transition: all 0.3s;
+}
+.fragment-dot.unlocked {
+  background: var(--success);
+  border-color: var(--success);
+  box-shadow: 0 0 8px var(--success);
+}
+
+/* ===================== HOMEPAGE ===================== */
+#page-home {
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: radial-gradient(ellipse at 50% 30%, rgba(0,212,255,0.08) 0%, transparent 60%);
+}
+
+.home-logo {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 900;
+  text-align: center;
+  letter-spacing: 4px;
+  color: var(--primary);
+  text-shadow: 0 0 40px rgba(0,212,255,0.5), 0 0 80px rgba(0,212,255,0.2);
+  margin-bottom: 8px;
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+.home-subtitle {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--secondary);
+  text-align: center;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  margin-bottom: 60px;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { text-shadow: 0 0 40px rgba(0,212,255,0.5), 0 0 80px rgba(0,212,255,0.2); }
+  50% { text-shadow: 0 0 60px rgba(0,212,255,0.8), 0 0 120px rgba(0,212,255,0.4); }
+}
+
+.home-cards {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 900px;
+}
+
+.home-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 36px 40px;
+  flex: 1;
+  min-width: 280px;
+  max-width: 380px;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.home-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+.home-card.teacher::before { background: linear-gradient(90deg, var(--secondary), var(--warning)); }
+.home-card.student::before { background: linear-gradient(90deg, var(--primary), var(--success)); }
+.home-card:hover { transform: translateY(-4px); border-color: rgba(0,212,255,0.5); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+
+.card-icon { font-size: 2.5rem; margin-bottom: 16px; }
+.card-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  margin-bottom: 20px;
+  color: var(--primary);
+}
+.home-card.teacher .card-title { color: var(--secondary); }
+
+/* ===================== FORMS ===================== */
+.input-group { margin-bottom: 16px; }
+.input-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.input-field {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  transition: all 0.2s;
+  outline: none;
+}
+.input-field:focus { border-color: var(--primary); background: rgba(0,212,255,0.05); box-shadow: 0 0 0 3px rgba(0,212,255,0.1); }
+
+.members-grid { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+
+/* ===================== BUTTONS ===================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  width: 100%;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), #0088bb);
+  color: #000;
+  box-shadow: 0 4px 20px rgba(0,212,255,0.3);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,212,255,0.5); }
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+.btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
+.btn-danger {
+  background: linear-gradient(135deg, var(--danger), #aa0022);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(255,51,85,0.3);
+}
+.btn-success {
+  background: linear-gradient(135deg, var(--success), #00aa55);
+  color: #000;
+  box-shadow: 0 4px 20px rgba(0,255,136,0.3);
+}
+.btn-warning {
+  background: linear-gradient(135deg, var(--warning), #cc9900);
+  color: #000;
+}
+.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+
+/* ===================== ALERTS ===================== */
+.alert {
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  margin-top: 12px;
+  display: none;
+}
+.alert.show { display: block; }
+.alert-error { background: rgba(255,51,85,0.15); border: 1px solid rgba(255,51,85,0.4); color: var(--danger); }
+.alert-success { background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.3); color: var(--success); }
+.alert-info { background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.3); color: var(--primary); }
+.alert-warning { background: rgba(255,204,0,0.1); border: 1px solid rgba(255,204,0,0.3); color: var(--warning); }
+
+/* ===================== LEVEL PAGES ===================== */
+.level-page {
+  padding: 30px 20px 60px;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.level-header {
+  text-align: center;
+  margin-bottom: 36px;
+  padding: 30px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.level-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--level-color, var(--primary)), transparent);
+}
+
+.level-badge {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 4px;
+  color: var(--level-color, var(--primary));
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.level-name {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 900;
+  color: var(--level-color, var(--primary));
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+.level-briefing {
+  font-size: 1rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ===================== EXERCISE CARD ===================== */
+.exercise-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px;
+  margin-bottom: 24px;
+}
+.exercise-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.exercise-badge {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  background: rgba(0,212,255,0.1);
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  border-radius: 4px;
+  color: var(--primary);
+  white-space: nowrap;
+}
+.exercise-title {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text);
+}
+.exercise-prompt {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--secondary);
+  background: rgba(255,107,0,0.08);
+  border-left: 3px solid var(--secondary);
+  padding: 10px 14px;
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+/* ===================== TIMER ===================== */
+.timer-bar {
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.timer-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); letter-spacing: 2px; }
+.timer-display {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--success);
+  min-width: 60px;
+  transition: color 0.3s;
+}
+.timer-display.warning { color: var(--warning); }
+.timer-display.danger { color: var(--danger); animation: blink 0.5s ease-in-out infinite; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+.timer-progress {
+  flex: 1;
+  height: 6px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.timer-progress-bar {
+  height: 100%;
+  background: var(--success);
+  border-radius: 3px;
+  transition: width 1s linear, background 0.3s;
+}
+
+/* ===================== QCM QUESTIONS ===================== */
+.question-block {
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 18px;
+  margin-bottom: 14px;
+  transition: border-color 0.2s;
+}
+.question-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+.options-grid { display: flex; flex-direction: column; gap: 8px; }
+.option-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+.option-label:hover { background: rgba(0,212,255,0.06); border-color: rgba(0,212,255,0.4); }
+.option-label input[type="radio"] { margin-top: 2px; accent-color: var(--primary); flex-shrink: 0; }
+.option-label.correct { background: rgba(0,255,136,0.1); border-color: var(--success); color: var(--success); }
+.option-label.wrong { background: rgba(255,51,85,0.1); border-color: var(--danger); color: var(--danger); }
+
+/* ===================== TRUE/FALSE ===================== */
+.tf-block {
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 10px;
+}
+.tf-question { font-size: 0.9rem; color: var(--text); margin-bottom: 10px; line-height: 1.5; }
+.tf-buttons { display: flex; gap: 10px; }
+.tf-btn {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.tf-btn:hover { border-color: var(--primary); color: var(--primary); }
+.tf-btn.selected-true { background: rgba(0,255,136,0.15); border-color: var(--success); color: var(--success); }
+.tf-btn.selected-false { background: rgba(255,51,85,0.15); border-color: var(--danger); color: var(--danger); }
+.tf-btn.correct { background: rgba(0,255,136,0.2); border-color: var(--success); color: var(--success); }
+.tf-btn.wrong { background: rgba(255,51,85,0.2); border-color: var(--danger); color: var(--danger); }
+
+/* ===================== VOCABULARY EXERCISE ===================== */
+.vocab-block {
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 10px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.vocab-num {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--primary);
+  min-width: 24px;
+  margin-top: 10px;
+}
+.vocab-def { flex: 1; }
+.vocab-def-text { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 8px; line-height: 1.5; }
+.vocab-input {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  outline: none;
+  transition: all 0.2s;
+}
+.vocab-input:focus { border-color: var(--primary); background: rgba(0,212,255,0.05); }
+.vocab-input.correct { border-color: var(--success); background: rgba(0,255,136,0.08); color: var(--success); }
+.vocab-input.wrong { border-color: var(--danger); background: rgba(255,51,85,0.08); color: var(--danger); }
+
+/* ===================== ORAL EXERCISE ===================== */
+.situation-card {
+  background: var(--bg-card2);
+  border-left: 4px solid var(--secondary);
+  border-radius: 0 8px 8px 0;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.situation-text { font-size: 0.95rem; line-height: 1.7; color: var(--text); font-style: italic; }
+
+.assessed-on {
+  background: rgba(0,212,255,0.06);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  margin-bottom: 20px;
+}
+.assessed-title {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+.assessed-list { font-size: 0.85rem; color: var(--text-muted); line-height: 1.8; }
+
+.random-agent {
+  background: linear-gradient(135deg, rgba(255,107,0,0.15), rgba(255,204,0,0.1));
+  border: 1px solid rgba(255,107,0,0.4);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.random-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); letter-spacing: 3px; margin-bottom: 8px; }
+.random-name {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--secondary);
+  letter-spacing: 3px;
+  text-shadow: 0 0 20px rgba(255,107,0,0.5);
+}
+
+.teacher-score-input {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.score-input-label {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.score-input {
+  width: 80px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px;
+  color: var(--warning);
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-align: center;
+  outline: none;
+  transition: all 0.2s;
+}
+.score-input:focus { border-color: var(--warning); background: rgba(255,204,0,0.05); }
+
+/* ===================== INCIDENT REPORT ===================== */
+.incident-report {
+  background: #f5f0e8;
+  color: #222;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 20px;
+  font-family: 'Courier New', monospace;
+  border: 2px solid #ccc;
+  position: relative;
+}
+.incident-report::before {
+  content: '⚠ SECUREFORCE LTD — CONFIDENTIAL';
+  position: absolute;
+  top: -1px; left: 50%; transform: translateX(-50%);
+  background: #c00;
+  color: #fff;
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  padding: 2px 10px;
+  border-radius: 0 0 4px 4px;
+}
+.incident-header { text-align: center; margin-bottom: 16px; padding-top: 10px; }
+.incident-title { font-size: 0.9rem; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; }
+.incident-meta { font-size: 0.8rem; color: #555; margin-top: 6px; }
+.incident-body { font-size: 0.85rem; line-height: 1.7; border-top: 1px solid #ccc; padding-top: 14px; }
+.incident-status {
+  margin-top: 14px;
+  font-weight: bold;
+  color: #c00;
+  font-size: 0.85rem;
+}
+
+/* ===================== SCORE RESULT ===================== */
+.result-panel {
+  background: var(--bg-card2);
+  border-radius: 10px;
+  padding: 24px;
+  text-align: center;
+  border: 1px solid var(--border);
+  margin-top: 20px;
+  display: none;
+}
+.result-panel.show { display: block; }
+.result-score-big {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 900;
+  margin-bottom: 8px;
+}
+.result-score-big.pass { color: var(--success); text-shadow: 0 0 30px rgba(0,255,136,0.5); }
+.result-score-big.fail { color: var(--danger); text-shadow: 0 0 30px rgba(255,51,85,0.5); }
+.result-label { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); letter-spacing: 3px; margin-bottom: 16px; }
+.points-change {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.points-change.gain { color: var(--success); }
+.points-change.loss { color: var(--danger); }
+
+/* ===================== INDICE REVEAL ===================== */
+.indice-reveal {
+  background: linear-gradient(135deg, rgba(0,255,136,0.1), rgba(0,212,255,0.1));
+  border: 1px solid var(--success);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  margin-top: 16px;
+  animation: reveal-pulse 1s ease-out;
+}
+@keyframes reveal-pulse {
+  0% { transform: scale(0.95); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.indice-label { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 4px; color: var(--text-muted); margin-bottom: 6px; }
+.indice-word {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--success);
+  letter-spacing: 6px;
+  text-shadow: 0 0 30px rgba(0,255,136,0.6);
+}
+
+/* ===================== INTRO PAGE ===================== */
+#page-intro {
+  background: radial-gradient(ellipse at 50% 50%, rgba(0,212,255,0.05) 0%, transparent 70%);
+}
+.intro-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 50px 20px;
+  text-align: center;
+}
+.intro-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  font-weight: 900;
+  color: var(--primary);
+  letter-spacing: 3px;
+  margin-bottom: 30px;
+}
+.intro-scenario {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px;
+  text-align: left;
+  margin-bottom: 30px;
+  position: relative;
+}
+.intro-scenario::before {
+  content: '📡 INCOMING TRANSMISSION';
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  color: var(--primary);
+  display: block;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.intro-scenario p { font-size: 1rem; line-height: 1.8; color: var(--text); margin-bottom: 12px; }
+.intro-scenario p:last-child { margin-bottom: 0; }
+.intro-scenario em { color: var(--primary); font-style: normal; font-weight: 600; }
+
+.rules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin-bottom: 30px;
+}
+.rule-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  text-align: center;
+}
+.rule-icon { font-size: 1.5rem; margin-bottom: 6px; }
+.rule-text { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
+.rule-text strong { color: var(--warning); display: block; font-family: var(--font-display); font-size: 0.75rem; letter-spacing: 1px; }
+
+/* ===================== FINAL PAGE ===================== */
+#page-final {
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: radial-gradient(ellipse at 50% 50%, rgba(255,204,0,0.08) 0%, transparent 60%);
+}
+.final-container { max-width: 700px; width: 100%; }
+.final-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  font-weight: 900;
+  color: var(--warning);
+  text-align: center;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+}
+.final-subtitle {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-align: center;
+  letter-spacing: 3px;
+  margin-bottom: 30px;
+}
+
+.fragments-display {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+.fragment-chip {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 20px;
+  text-align: center;
+}
+.fragment-chip-num { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-muted); margin-bottom: 4px; }
+.fragment-chip-word {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--success);
+  letter-spacing: 2px;
+}
+
+.code-entry-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px;
+  margin-bottom: 20px;
+}
+.code-entry-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+  text-align: center;
+}
+.code-input {
+  width: 100%;
+  background: rgba(255,204,0,0.05);
+  border: 2px solid rgba(255,204,0,0.3);
+  border-radius: 8px;
+  padding: 16px;
+  color: var(--warning);
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  outline: none;
+  transition: all 0.2s;
+}
+.code-input:focus { border-color: var(--warning); box-shadow: 0 0 0 3px rgba(255,204,0,0.1); }
+
+/* ===================== VICTORY ===================== */
+.victory-screen {
+  text-align: center;
+  animation: victory-in 0.8s ease-out;
+}
+@keyframes victory-in {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.victory-icon { font-size: 5rem; margin-bottom: 20px; animation: bounce 1s ease-in-out infinite; }
+@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.victory-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  font-weight: 900;
+  color: var(--success);
+  letter-spacing: 4px;
+  margin-bottom: 10px;
+  text-shadow: 0 0 40px rgba(0,255,136,0.6);
+}
+.victory-subtitle { font-family: var(--font-mono); color: var(--text-muted); letter-spacing: 3px; font-size: 0.8rem; margin-bottom: 24px; }
+.final-score-display {
+  background: var(--bg-card);
+  border: 1px solid var(--success);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.final-score-num {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--success);
+}
+.final-score-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); letter-spacing: 3px; }
+
+/* ===================== TEACHER DASHBOARD ===================== */
+#page-teacher {
+  padding: 30px 20px 60px;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+.teacher-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--secondary);
+  letter-spacing: 3px;
+  margin-bottom: 6px;
+}
+.teacher-subtitle { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); letter-spacing: 2px; margin-bottom: 30px; }
+
+.teacher-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+.teacher-section-title {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  color: var(--secondary);
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.teams-table { width: 100%; border-collapse: collapse; }
+.teams-table th, .teams-table td {
+  padding: 10px 12px;
+  text-align: left;
+  font-size: 0.85rem;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono);
+}
+.teams-table th { color: var(--text-muted); font-size: 0.7rem; letter-spacing: 2px; }
+.teams-table td { color: var(--text); }
+
+/* ===================== PROGRESS BAR (level) ===================== */
+.progress-steps {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.progress-step {
+  flex: 1;
+  min-width: 60px;
+  max-width: 120px;
+  padding: 8px 4px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  transition: all 0.3s;
+}
+.progress-step.active {
+  background: rgba(0,212,255,0.1);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.progress-step.done {
+  background: rgba(0,255,136,0.1);
+  border-color: var(--success);
+  color: var(--success);
+}
+
+/* ===================== READING TEXT ===================== */
+.reading-text {
+  background: #f8f4ee;
+  color: #1a1a1a;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  font-family: Georgia, serif;
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+.reading-text h4 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; color: #c00; }
+.reading-text .meta { font-size: 0.8rem; color: #666; margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid #ddd; }
+
+/* Modal */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.show { display: flex; }
+.modal-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+.modal-title { font-family: var(--font-display); font-size: 1rem; letter-spacing: 2px; color: var(--primary); margin-bottom: 20px; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #2b2d35; }
+::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.3); border-radius: 3px; }
+
+/* Responsive */
+@media (max-width: 600px) {
+  .home-cards { flex-direction: column; }
+  .vocab-block { flex-direction: column; }
+  .teacher-score-input { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<!-- HUD -->
+<div id="hud">
+  <div class="hud-team" id="hud-team-name">TEAM —</div>
+  <div class="hud-level" id="hud-level-name">LEVEL 1</div>
+  <div class="hud-fragments" id="hud-fragments"></div>
+  <div class="hud-score">⬡ <span id="hud-score">0</span> PTS</div>
+</div>
+
+<!-- ==================== PAGE: HOME ==================== -->
+<div id="page-home" class="page active">
+  <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;">
+    <div style="width:100%;max-width:900px;">
+      <div class="home-logo">EXPERTS WANTED</div>
+      <div class="home-subtitle">SecureForce Ltd. — Security Operations</div>
+      <div class="home-cards">
+        <!-- TEACHER CARD -->
+        <div class="home-card teacher">
+          <div class="card-icon">🔐</div>
+          <div class="card-title">Teacher Access</div>
+          <div class="input-group">
+            <label class="input-label">Access Code</label>
+            <input type="password" id="teacher-code-input" class="input-field" placeholder="••••" maxlength="6">
+          </div>
+          <button class="btn btn-warning" onclick="teacherLogin()">Enter Dashboard</button>
+          <div id="teacher-error" class="alert alert-error"></div>
+        </div>
+        <!-- STUDENT CARD -->
+        <div class="home-card student">
+          <div class="card-icon">🛡️</div>
+          <div class="card-title">Team Access</div>
+          <div class="input-group">
+            <label class="input-label">Team Name</label>
+            <input type="text" id="team-name-input" class="input-field" placeholder="e.g. Alpha Squad" maxlength="30">
+          </div>
+          <div class="input-label" style="margin-bottom:8px;">Team Members (ID format: CA-IE)</div>
+          <div class="members-grid" id="members-grid">
+            <input type="text" class="input-field member-input" placeholder="Member 1 (e.g. CA-IE)" maxlength="10" style="text-transform:uppercase">
+            <input type="text" class="input-field member-input" placeholder="Member 2" maxlength="10" style="text-transform:uppercase">
+            <input type="text" class="input-field member-input" placeholder="Member 3" maxlength="10" style="text-transform:uppercase">
+            <input type="text" class="input-field member-input" placeholder="Member 4" maxlength="10" style="text-transform:uppercase">
+            <input type="text" class="input-field member-input" placeholder="Member 5 (optional)" maxlength="10" style="text-transform:uppercase">
+          </div>
+          <button class="btn btn-primary" onclick="studentLogin()">Start Mission</button>
+          <div id="student-error" class="alert alert-error"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PAGE: INTRO ==================== -->
+<div id="page-intro" class="page">
+  <div class="intro-container">
+    <div class="intro-title">MISSION BRIEFING</div>
+    <div class="intro-scenario">
+      <p><em>London, Monday 7:43 AM.</em> A series of security failures has been reported across client sites: cameras looped, access logs wiped, patrol reports falsified.</p>
+      <p>Your team has been called in as <em>external auditors</em>. Move through five secure sectors, identify the vulnerabilities, and recover the <em>five fragments of the Master Code</em> before the system locks down.</p>
+      <p><em>Stay sharp, Agents. SecureForce is counting on you.</em></p>
+    </div>
+    <div class="rules-grid">
+      <div class="rule-item">
+        <div class="rule-icon">🏆</div>
+        <div class="rule-text"><strong>+50 PTS</strong>Score ≥ threshold → advance</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-icon">⚠️</div>
+        <div class="rule-text"><strong>-10 PTS</strong>Failed exercise penalty</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-icon">⏱️</div>
+        <div class="rule-text"><strong>TIMER</strong>Some levels are timed</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-icon">🔑</div>
+        <div class="rule-text"><strong>5 FRAGMENTS</strong>Collect all to win</div>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="goToLevel(1)" style="max-width:300px;margin:0 auto;display:flex;">
+      ▶ BEGIN MISSION
+    </button>
+  </div>
+</div>
+
+<!-- ==================== LEVEL 1 ==================== -->
+<div id="page-level1" class="page theme-l1">
+  <div class="level-page">
+    <div class="progress-steps">
+      <div class="progress-step active" id="ps1">L1 · Induction</div>
+      <div class="progress-step" id="ps2">L2 · Intelligence</div>
+      <div class="progress-step" id="ps3">L3 · Situation</div>
+      <div class="progress-step" id="ps4">L4 · Forensics</div>
+      <div class="progress-step" id="ps5">L5 · Director</div>
+    </div>
+    <div class="level-header">
+      <div class="level-badge">LEVEL 01 — CLEARANCE: BASIC</div>
+      <div class="level-name">The Induction Room</div>
+      <div class="level-briefing">Before accessing the operational floors, your team must prove it knows the language of the job.</div>
+    </div>
+
+    <!-- EXERCISE 1 -->
+    <div id="l1-ex1" class="exercise-card">
+      <div class="exercise-header">
+        <span class="exercise-badge">EXERCISE 1 · QCM</span>
+        <span class="exercise-title">Security Knowledge Assessment</span>
+      </div>
+      <div class="exercise-prompt">"Complete the security knowledge assessment. You have 7 minutes."</div>
+      <div id="l1-timer1" class="timer-bar">
+        <span class="timer-label">TIME</span>
+        <span class="timer-display" id="l1-td1">7:00</span>
+        <div class="timer-progress"><div class="timer-progress-bar" id="l1-tp1" style="width:100%"></div></div>
+      </div>
+      <div id="l1-q1-container"></div>
+      <button class="btn btn-primary" onclick="submitL1Ex1()" id="l1-ex1-submit">Submit Answers</button>
+      <div class="result-panel" id="l1-ex1-result">
+        <div class="result-score-big" id="l1-ex1-score"></div>
+        <div class="result-label" id="l1-ex1-label"></div>
+        <div class="points-change" id="l1-ex1-pts"></div>
+        <div id="l1-ex1-indice"></div>
+        <button class="btn btn-primary" id="l1-ex1-next" style="display:none;margin-top:12px;max-width:300px;" onclick="showL1Ex2()">Continue →</button>
+        <button class="btn btn-success" id="l1-ex1-advance" style="display:none;margin-top:12px;max-width:300px;" onclick="goToLevel(2)">Advance to Level 2 →</button>
+      </div>
+    </div>
+
+    <!-- EXERCISE 2 -->
+    <div id="l1-ex2" class="exercise-card" style="display:none">
+      <div class="exercise-header">
+        <span class="exercise-badge">EXERCISE 2 · QCM</span>
+        <span class="exercise-title">Second Assessment</span>
+      </div>
+      <div class="exercise-prompt">"First attempt incomplete. A second assessment has been loaded. Take your time — but remember, every failure has a cost."</div>
+      <div id="l1-q2-container"></div>
+      <button class="btn btn-primary" onclick="submitL1Ex2()">Submit Answers</button>
+      <div class="result-panel" id="l1-ex2-result">
+        <div class="result-score-big" id="l1-ex2-score"></div>
+        <div class="result-label" id="l1-ex2-label"></div>
+        <div class="points-change" id="l1-ex2-pts"></div>
+        <div id="l1-ex2-indice"></div>
+        <button class="btn btn-success" style="margin-top:12px;max-width:300px;" onclick="goToLevel(2)">Advance to Level 2 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== LEVEL 2 ==================== -->
+<div id="page-level2" class="page theme-l2">
+  <div class="level-page">
+    <div class="progress-steps">
+      <div class="progress-step done">L1 · Induction</div>
+      <div class="progress-step active">L2 · Intelligence</div>
+      <div class="progress-step">L3 · Situation</div>
+      <div class="progress-step">L4 · Forensics</div>
+      <div class="progress-step">L5 · Director</div>
+    </div>
+    <div class="level-header">
+      <div class="level-badge">LEVEL 02 — CLEARANCE: STANDARD</div>
+      <div class="level-name">The Intelligence Desk</div>
+      <div class="level-briefing">Two incident reports have been flagged. Read carefully — if the data has been tampered with, you'll find the inconsistencies.</div>
+    </div>
+
+    <!-- EX1: True/False -->
+    <div id="l2-ex1" class="exercise-card">
+      <div class="exercise-header">
+        <span class="exercise-badge">EXERCISE 1 · TRUE / FALSE</span>
+        <span class="exercise-title">Incident Report Analysis</span>
+      </div>
+      <div class="exercise-prompt">"Report file #A-114 has been loaded. Read carefully. The answers are in the document — if you know where to look."</div>
+      <div class="reading-text">
+        <h4>SecureForce Ltd. — Incident Report #A-114</h4>
+        <div class="meta">Site: Hartwell Business Park, Building C &nbsp;|&nbsp; Date: Sunday 14 April — 23:47 &nbsp;|&nbsp; Officer: D. Kowalski #2281</div>
+        <p>At approximately 23:47, during a routine patrol of the car park on the north side of Building C, Officer Kowalski noticed that the side entrance door was ajar. The door, which should be locked after 20:00, showed no signs of forced entry. Officer Kowalski immediately radioed the control room and waited for backup before entering the building.</p>
+        <p>Once inside, the officers found that the storage room on the ground floor had been accessed. Several boxes had been moved and a laptop was reported missing by the site manager, who was contacted at 00:15. No individuals were found on the premises. CCTV footage from cameras 4 and 7 was reviewed — both cameras had been manually disabled between 22:30 and 23:50.</p>
+        <p>The site manager confirmed that only three members of staff hold a key to the storage room. Their details have been passed to the investigation team. The police were called at 00:20 and arrived on site at 00:52. The entrance door has been secured and the incident has been logged in the site register.</p>
+        <div class="incident-status">Status: Under Investigation</div>
+      </div>
+      <div id="l2-tf-container"></div>
+      <button class="btn btn-primary" onclick="submitL2Ex1()" style="margin-top:16px;">Submit Answers</button>
+      <div class="result-panel" id="l2-ex1-result">
+        <div class="result-score-big" id="l2-ex1-score"></div>
+        <div class="result-label" id="l2-ex1-label"></div>
+        <div class="points-change" id="l2-ex1-pts"></div>
+        <div id="l2-ex1-indice"></div>
+        <button class="btn btn-primary" id="l2-ex1-next" style="display:none;margin-top:12px;max-width:300px;" onclick="showL2Ex2()">Continue →</button>
+        <button class="btn btn-success" id="l2-ex1-advance" style="display:none;margin-top:12px;max-width:300px;" onclick="goToLevel(3)">Advance to Level 3 →</button>
+      </div>
+    </div>
+
+    <!-- EX2: QCM -->
+    <div id="l2-ex2" class="exercise-card" style="display:none">
+      <div class="exercise-header">
+        <span class="exercise-badge">EXERCISE 2 · QCM</span>
+        <span class="exercise-title">Second Report Analysis</span>
+      </div>
+      <div class="exercise-prompt">"File #A-114 analysis inconclusive. A second report, file #B-227, has been flagged. Read and answer."</div>
+      <div class="reading-text">
+        <h4>SecureForce Ltd. — Incident Report #B-227</h4>
+        <div class="meta">Site: Norfield Shopping Centre, Main Entrance &nbsp;|&nbsp; Date: Saturday 20 April — 14:15 &nbsp;|&nbsp; Officer: T. Barnes #1047</div>
+        <p>At 14:15 on Saturday afternoon, Officer Barnes was stationed at the main entrance of Norfield Shopping Centre when a member of the public approached and reported that a woman had collapsed near the food court on the first floor. Officer Barnes immediately contacted the control room, requested first aid assistance, and proceeded to the location.</p>
+        <p>Upon arrival, Officer Barnes found a woman in her sixties lying on the floor, conscious but disoriented. A first aider arrived within three minutes and began assessment. Officer Barnes secured a two-metre perimeter around the casualty to prevent crowding and ensure clear access for emergency services.</p>
+        <p>An ambulance was called at 14:19 and arrived at 14:31. The casualty was taken to hospital. Officer Barnes completed a full written report and submitted it to the site manager before the end of his shift. No suspicious activity was recorded in connection with the incident.</p>
+        <div class="incident-status">Status: Closed</div>
+      </div>
+      <div id="l2-q2-container"></div>
+      <button class="btn btn-primary" onclick="submitL2Ex2()" style="margin-top:16px;">Submit Answers</button>
+      <div class="result-panel" id="l2-ex2-result">
+        <div class="result-score-big" id="l2-ex2-score"></div>
+        <div class="result-label" id="l2-ex2-label"></div>
+        <div class="points-change" id="l2-ex2-pts"></div>
+        <div id="l2-ex2-indice"></div>
+        <button class="btn btn-success" style="margin-top:12px;max-width:300px;" onclick="goToLevel(3)">Advance to Level 3 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== LEVEL 3 ==================== -->
+<div id="page-level3" class="page theme-l3">
+  <div class="level-page">
+    <div class="progress-steps">
+      <div class="progress-step done">L1 · Induction</div>
+      <div class="progress-step done">L2 · Intelligence</div>
+      <div class="progress-step active">L3 · Situation</div>
+      <div class="progress-step">L4 · Forensics</div>
+      <div class="progress-step">L5 · Director</div>
+    </div>
+    <div class="level-header">
+      <div class="level-badge">LEVEL 03 — CLEARANCE: OPERATIONAL</div>
+      <div class="level-name">The Situation Room</div>
+      <div class="level-briefing">A live incident has just come in. One agent — selected at random — must step in immediately. No preparation. No notes.</div>
+    </div>
+
+    <div id="l3-ex1" class="exercise-card">
+      <div class="exercise-header">
+        <span class="exercise-badge">EXERCISE 1 · ROLE PLAY</span>
+        <span class="exercise-title">Live Situation Response</span>
+      </div>
+      <div class="exercise-prompt" id="l3-ex1-prompt">"Agent [draw], you are live. Handle the situation."</div>
+      <div class="random-agent">
+        <div class="random-label">AGENT SELECTED</div>
+        <div class="random-name" id="l3-agent1">—</div>
+      </div>
+      <div class="situation-card">
+        <div class="situation-text">You are a security officer on duty at the entrance of a logistics warehouse. A delivery driver arrives without a prior appointment and insists on entering immediately, claiming his truck must be unloaded urgently. He has no delivery order, no ID badge and is becoming increasingly impatient. <strong>Your supervisor is unavailable.</strong></div>
+      </div>
+      <div class="assessed-on">
+        <div class="assessed-title">YOU WILL BE ASSESSED ON :</div>
+        <div class="assessed-list">
+          ▸ Use of appropriate security vocabulary<br>
+          ▸ Clarity and professionalism of communication<br>
+          ▸ Correct application of access control procedure<br>
+          ▸ Ability to stay calm under pressure
+        </div>
+      </div>
+      <div style="background:rgba(255,204,0,0.08);border:1px solid rgba(255,204,0,0.2);border-radius:6px;padding:10px 14px;margin-bottom:16px;font-size:0.8rem;color:var(--warning);">⏱ No preparation time. No notes. Don't read the text, use your own words!</div>
+      <div class="teacher-score-input">
+        <span class="score-input-label">TEACHER VALIDATION CODE (1–10) :</span>
+        <input type="number" class="score-input" id="l3-score1" min="1" max="10" placeholder="—">
+      </div>
+      <button class="btn btn-primary" onclick="submitL3Ex1()">Validate Score</button>
+      <div class="result-panel" id="l3-ex1-result">
+        <div class="result-score-big" id="l3-ex1-score"></div>
+        <div class="result-label" id="l3-ex1-label"></div>
+        <div class="points-change" id="l3-ex1-pts"></div>
+        <div id="l3-ex1-indice"></div>
+        <button class="btn btn-primary" id="l3-ex1-next" style="display:none;margin-top:12px;max-width:300px;" onclick="showL3Ex2()">Continue →</button>
+        <button class="btn btn-success" id="l3-ex1-advance" style="display:none;margin-top:12px;max-width:300px;" onclick="goToLevel(4)">Advance to Level 4 →</button>
+      </div>
+    </div>
+
+    <div id="l3-ex2" class="exercise-card" style="display:none">
+      <div class="exercise-header">
+        <span class="exercise-badge">EXERCISE 2 · ROLE PLAY</span>
+        <span class="exercise-title">Second Situation</span>
+      </div>
+      <div class="exercise-prompt">"Performance insufficient. A second situation has escalated. A different agent must respond."</div>
+      <div class="random-agent">
+        <div class="random-label">AGENT SELECTED</div>
+        <div class="random-name" id="l3-agent2">—</div>
+      </div>
+      <div class="situation-card">
+        <div class="situation-text">You are a security officer patrolling an office building at night. You notice a light on in a room that should be empty and find the door unlocked. Inside, you discover a man in casual clothes sitting at a desk with a laptop. He claims to be an IT technician called in for an emergency repair, but has no company ID and his name does not appear on the authorised access list.</div>
+      </div>
+      <div class="assessed-on">
+        <div class="assessed-title">YOU WILL BE ASSESSED ON :</div>
+        <div class="assessed-list">
+          ▸ Use of appropriate security vocabulary<br>
+          ▸ Ability to question and assess a suspicious situation<br>
+          ▸ Decision-making and procedure follow-through<br>
+          ▸ Clear and structured oral reporting
+        </div>
+      </div>
+      <div style="background:rgba(255,204,0,0.08);border:1px solid rgba(255,204,0,0.2);border-radius:6px;padding:10px 14px;margin-bottom:16px;font-size:0.8rem;color:var(--warning);">⏱ No preparation time. No notes. Don't read the text, use your own words!</div>
+      <div class="teacher-score-input">
+        <span class="score-input-label">TEACHER VALIDATION CODE (1–10) :</span>
+        <input type="number" class="score-input" id="l3-score2" min="1" max="10" placeholder="—">
+      </div>
+      <button class="btn btn-primary" onclick="submitL3Ex2()">Validate Score</button>
+      <div class="result-panel" id="l3-ex2-result">
+        <div class="result-score-big" id="l3-ex2-score"></div>
+        <div class="result-label" id="l3-ex2-label"></div>
+        <div class="points-change" id="l3-ex2-pts"></div>
+        <div id="l3-ex2-indice"></div>
+        <button class="btn btn-success" style="margin-top:12px;max-width:300px;" onclick="goToLevel(4)">Advance to Level 4 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== LEVEL 4 ==================== -->
+<div id="page-level4" class="page theme-l4">
+  <div class="level-page">
+    <div class="progress-steps">
+      <div class="progress-step done">L1 · Induction</div>
+      <div class="progress-step done">L2 · Intelligence</div>
+      <div class="progress-step done">L3 · Situation</div>
+      <div class="progress-step active">L4 · Forensics</div>
+      <div class="progress-step">L5 · Director</div>
+    </div>
+    <div class="level-header">
+      <div class="level-badge">LEVEL 04 — CLEARANCE: ADVANCED</div>
+      <div class="level-name">The Forensics Lab</div>
+      <div class="level-briefing">Encrypted communications recovered. Each word replaced by its definition. Crack the terminology cipher before time runs out.</div>
+    </div>
+
+    <div id="l4-ex1" class="exercise-card">
+      <div class="exercise-header">
+        <span class="exercise-badge">EXERCISE 1 · VOCABULARY</span>
+        <span class="exercise-title">Decrypt the Terminology</span>
+      </div>
+      <div class="exercise-prompt">"Encrypted fragments loaded. You have 8 minutes to decode."</div>
+      <div id="l4-timer1" class="timer-bar">
+        <span class="timer-label">TIME</span>
+        <span class="timer-display" id="l4-td1">8:00</span>
+        <div class="timer-progress"><div class="timer-progress-bar" id="l4-tp1" style="width:100%"></div></div>
+      </div>
+      <div id="l4-v1-container"></div>
+      <button class="btn btn-primary" onclick="submitL4Ex1()" style="margin-top:16px;">Submit Answers</button>
+      <div class="result-panel" id="l4-ex1-result">
+        <div class="result-score-big" id="l4-ex1-score"></div>
+        <div class="result-label" id="l4-ex1-label"></div>
+        <div class="points-change" id="l4-ex1-pts"></div>
+        <div id="l4-ex1-indice"></div>
+        <button class="btn btn-primary" id="l4-ex1-next" style="display:none;margin-top:12px;max-width:300px;" onclick="showL4Ex2()">Continue →</button>
+        <button class="btn btn-success" id="l4-ex1-advance" style="display:none;margin-top:12px;max-width:300px;" onclick="goToLevel(5)">Advance to Level 5 →</button>
+      </div>
+    </div>
+
+    <div id="l4-ex2" class="exercise-card" style="display:none">
+      <div class="exercise-header">
+        <span class="exercise-badge">EXERCISE 2 · VOCABULARY</span>
+        <span class="exercise-title">Second Cipher Batch</span>
+      </div>
+      <div class="exercise-prompt">"First cipher incomplete. A second batch has been extracted. Timer restarted."</div>
+      <div id="l4-timer2" class="timer-bar">
+        <span class="timer-label">TIME</span>
+        <span class="timer-display" id="l4-td2">8:00</span>
+        <div class="timer-progress"><div class="timer-progress-bar" id="l4-tp2" style="width:100%"></div></div>
+      </div>
+      <div id="l4-v2-container"></div>
+      <button class="btn btn-primary" onclick="submitL4Ex2()" style="margin-top:16px;">Submit Answers</button>
+      <div class="result-panel" id="l4-ex2-result">
+        <div class="result-score-big" id="l4-ex2-score"></div>
+        <div class="result-label" id="l4-ex2-label"></div>
+        <div class="points-change" id="l4-ex2-pts"></div>
+        <div id="l4-ex2-indice"></div>
+        <button class="btn btn-success" style="margin-top:12px;max-width:300px;" onclick="goToLevel(5)">Advance to Level 5 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== LEVEL 5 ==================== -->
+<div id="page-level5" class="page theme-l5">
+  <div class="level-page">
+    <div class="progress-steps">
+      <div class="progress-step done">L1 · Induction</div>
+      <div class="progress-step done">L2 · Intelligence</div>
+      <div class="progress-step done">L3 · Situation</div>
+      <div class="progress-step done">L4 · Forensics</div>
+      <div class="progress-step active">L5 · Director</div>
+    </div>
+    <div class="level-header">
+      <div class="level-badge">LEVEL 05 — CLEARANCE: MAXIMUM</div>
+      <div class="level-name">The Director's Office</div>
+      <div class="level-briefing">Three incident report sheets. One agent — drawn at random — delivers a clear oral account. No preparation. No notes. One convincing performance unlocks the final fragment.</div>
+    </div>
+
+    <!-- EX1 -->
+    <div id="l5-ex1" class="exercise-card">
+      <div class="exercise-header">
+        <span class="exercise-badge">EXERCISE 1 · ORAL REPORT</span>
+        <span class="exercise-title">Incident Report Account</span>
+      </div>
+      <div class="exercise-prompt">"Incident Report #1 displayed. Agent [draw], deliver your account to the Director."</div>
+      <div class="random-agent">
+        <div class="random-label">AGENT SELECTED</div>
+        <div class="random-name" id="l5-agent1">—</div>
+      </div>
+      <div class="incident-report">
+        <div class="incident-header">
+          <div class="incident-title">Incident Report Sheet #1</div>
+          <div class="incident-meta">Site: Greenfield Industrial Estate, Gate B &nbsp;|&nbsp; Date: Friday 19 April — 02:30 &nbsp;|&nbsp; Officer: S. Mitchell #3312</div>
+        </div>
+        <div class="incident-body">
+          <p>At 02:30, Officer Mitchell noticed that Gate B, which should be locked overnight, was wide open. Tyre tracks were visible on the ground leading into the site. The officer immediately contacted the control room and requested backup.</p>
+          <p>A search of the premises revealed that the warehouse loading bay had been broken into. Three pallets of electronic equipment were missing. Two windows had been smashed and tools were found on the ground, suggesting the break-in had been carried out by at least two individuals.</p>
+          <p>CCTV cameras covering Gate B and the loading bay had been spray-painted and were non-operational. The police were called at 02:45 and arrived at 03:10. The site manager was informed at 03:15. The gate was secured and the scene was preserved for forensic examination.</p>
+          <div class="incident-status">Status: Under investigation — Case #2024/AR/0471</div>
+        </div>
+      </div>
+      <div style="background:rgba(255,204,0,0.08);border:1px solid rgba(255,204,0,0.2);border-radius:6px;padding:10px 14px;margin-bottom:16px;font-size:0.8rem;color:var(--warning);">Cover: what happened, when, what was found, actions taken, current status. ⏱ No preparation time. No notes.</div>
+      <div class="teacher-score-input">
+        <span class="score-input-label">TEACHER VALIDATION CODE (1–10) :</span>
+        <input type="number" class="score-input" id="l5-score1" min="1" max="10" placeholder="—">
+      </div>
+      <button class="btn btn-primary" onclick="submitL5Ex1()">Validate Score</button>
+      <div class="result-panel" id="l5-ex1-result">
+        <div class="result-score-big" id="l5-ex1-score"></div>
+        <div class="result-label" id="l5-ex1-label"></div>
+        <div class="points-change" id="l5-ex1-pts"></div>
+        <div id="l5-ex1-indice"></div>
+        <button class="btn btn-primary" id="l5-ex1-next" style="display:none;margin-top:12px;max-width:300px;" onclick="showL5Ex2()">Continue →</button>
+        <button class="btn btn-success" id="l5-ex1-advance" style="display:none;margin-top:12px;max-width:300px;" onclick="goToFinal()">🔐 Enter Final Code →</button>
+      </div>
+    </div>
+
+    <!-- EX2 -->
+    <div id="l5-ex2" class="exercise-card" style="display:none">
+      <div class="exercise-header">
+        <span class="exercise-badge">EXERCISE 2 · ORAL REPORT</span>
+        <span class="exercise-title">Second Account</span>
+      </div>
+      <div class="exercise-prompt">"Insufficient. Report #2 loaded. A different agent presents."</div>
+      <div class="random-agent">
+        <div class="random-label">AGENT SELECTED</div>
+        <div class="random-name" id="l5-agent2">—</div>
+      </div>
+      <div class="incident-report">
+        <div class="incident-header">
+          <div class="incident-title">Incident Report Sheet #2</div>
+          <div class="incident-meta">Site: Calton Medical Centre, Reception &nbsp;|&nbsp; Date: Tuesday 23 April — 11:05 &nbsp;|&nbsp; Officer: P. Nguyen #1198</div>
+        </div>
+        <div class="incident-body">
+          <p>At 11:05, a man entered the reception area and demanded to speak to the head of department immediately, claiming he had been unfairly dismissed. When told the manager was unavailable, he became verbally aggressive and began shouting at the receptionist.</p>
+          <p>Officer Nguyen approached the individual calmly, identified himself and asked the man to lower his voice. The man refused and continued to cause a disturbance. Officer Nguyen contacted the control room and requested assistance. A second officer arrived within four minutes.</p>
+          <p>The individual was escorted out of the building by both officers without further incident. He was warned that he would be banned from the premises if he returned. His details were recorded and passed to the HR department and the site manager. No physical violence occurred. Staff members present were visibly shaken and were offered support.</p>
+          <div class="incident-status">Status: Closed — individual banned from site</div>
+        </div>
+      </div>
+      <div style="background:rgba(255,204,0,0.08);border:1px solid rgba(255,204,0,0.2);border-radius:6px;padding:10px 14px;margin-bottom:16px;font-size:0.8rem;color:var(--warning);">Cover: what happened, when, what was found, actions taken, current status. ⏱ No preparation time. No notes.</div>
+      <div class="teacher-score-input">
+        <span class="score-input-label">TEACHER VALIDATION CODE (1–10) :</span>
+        <input type="number" class="score-input" id="l5-score2" min="1" max="10" placeholder="—">
+      </div>
+      <button class="btn btn-primary" onclick="submitL5Ex2()">Validate Score</button>
+      <div class="result-panel" id="l5-ex2-result">
+        <div class="result-score-big" id="l5-ex2-score"></div>
+        <div class="result-label" id="l5-ex2-label"></div>
+        <div class="points-change" id="l5-ex2-pts"></div>
+        <div id="l5-ex2-indice"></div>
+        <button class="btn btn-primary" id="l5-ex2-next" style="display:none;margin-top:12px;max-width:300px;" onclick="showL5Ex3()">Continue →</button>
+        <button class="btn btn-success" id="l5-ex2-advance" style="display:none;margin-top:12px;max-width:300px;" onclick="goToFinal()">🔐 Enter Final Code →</button>
+      </div>
+    </div>
+
+    <!-- EX3 -->
+    <div id="l5-ex3" class="exercise-card" style="display:none">
+      <div class="exercise-header">
+        <span class="exercise-badge">EXERCISE 3 · ORAL REPORT</span>
+        <span class="exercise-title">Final Account</span>
+      </div>
+      <div class="exercise-prompt">"Final chance. Report #3. Agent [draw], this is your moment."</div>
+      <div class="random-agent">
+        <div class="random-label">AGENT SELECTED</div>
+        <div class="random-name" id="l5-agent3">—</div>
+      </div>
+      <div class="incident-report">
+        <div class="incident-header">
+          <div class="incident-title">Incident Report Sheet #3</div>
+          <div class="incident-meta">Site: Westpark Conference Centre, Car Park L2 &nbsp;|&nbsp; Date: Wednesday 24 April — 19:50 &nbsp;|&nbsp; Officer: A. Torres #2756</div>
+        </div>
+        <div class="incident-body">
+          <p>At 19:50, during an evening patrol of Car Park Level 2, Officer Torres discovered a vehicle with its windows smashed. Personal belongings, including a bag and a coat, were visible on the back seat. A briefcase had been forced open on the ground next to the vehicle.</p>
+          <p>Officer Torres secured the area, contacted the control room and attempted to identify the vehicle owner through the registration plate. The owner, a delegate attending a conference on the floor above, was located and informed at 20:05.</p>
+          <p>CCTV footage from the car park was reviewed. A male individual wearing a dark hoodie was seen approaching the vehicle at 19:32 and leaving the car park on foot at 19:36. The footage was saved and handed to the police, who arrived at 20:30. The delegate chose not to remain on site and left after giving a statement.</p>
+          <div class="incident-status">Status: Closed — CCTV footage passed to police</div>
+        </div>
+      </div>
+      <div style="background:rgba(255,204,0,0.08);border:1px solid rgba(255,204,0,0.2);border-radius:6px;padding:10px 14px;margin-bottom:16px;font-size:0.8rem;color:var(--warning);">Cover: what happened, when, what was found, actions taken, current status. ⏱ No preparation time. No notes.</div>
+      <div class="teacher-score-input">
+        <span class="score-input-label">TEACHER VALIDATION CODE (1–10) :</span>
+        <input type="number" class="score-input" id="l5-score3" min="1" max="10" placeholder="—">
+      </div>
+      <button class="btn btn-primary" onclick="submitL5Ex3()">Validate Score</button>
+      <div class="result-panel" id="l5-ex3-result">
+        <div class="result-score-big" id="l5-ex3-score"></div>
+        <div class="result-label" id="l5-ex3-label"></div>
+        <div class="points-change" id="l5-ex3-pts"></div>
+        <div id="l5-ex3-indice"></div>
+        <button class="btn btn-success" style="margin-top:12px;max-width:300px;" onclick="goToFinal()">🔐 Enter Final Code →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PAGE FINAL CODE ==================== -->
+<div id="page-final" class="page">
+  <div class="final-container">
+    <div class="final-title">MASTER CODE</div>
+    <div class="final-subtitle">ALL FIVE FRAGMENTS RECOVERED</div>
+    <div class="fragments-display" id="fragments-display"></div>
+    <div class="code-entry-panel">
+      <div class="code-entry-label">ENTER THE COMPLETE MASTER CODE SEQUENCE</div>
+      <input type="text" class="code-input" id="final-code-input" placeholder="TYPE THE CODE HERE" style="text-transform:uppercase">
+      <div style="margin-top:14px;">
+        <button class="btn btn-warning" onclick="submitFinalCode()">🔓 UNLOCK THE SYSTEM</button>
+      </div>
+      <div id="final-error" class="alert alert-error" style="margin-top:12px;"></div>
+    </div>
+    <div id="victory-screen" style="display:none;">
+      <div class="victory-screen">
+        <div class="victory-icon">🏆</div>
+        <div class="victory-title">YOU ARE THE PERFECT TEAM</div>
+        <div class="victory-subtitle">CONGRATULATIONS — SYSTEM RESTORED</div>
+        <div class="final-score-display">
+          <div class="final-score-num" id="final-score-num">0</div>
+          <div class="final-score-label">TOTAL POINTS</div>
+        </div>
+        <button class="btn btn-primary" onclick="printReport()" style="max-width:300px;margin:0 auto 12px;display:flex;">📄 Generate Debrief Report</button>
+        <button class="btn btn-secondary" onclick="showPage('page-home')" style="max-width:300px;margin:0 auto;display:flex;">↩ New Mission</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== TEACHER DASHBOARD ==================== -->
+<div id="page-teacher" class="page">
+  <div style="padding:30px 20px 60px;max-width:900px;margin:0 auto;width:100%;">
+    <div class="teacher-title">TEACHER DASHBOARD</div>
+    <div class="teacher-subtitle">ACCESS LEVEL : ADMIN — SECUREFORCE OPS</div>
+
+    <div class="teacher-section">
+      <div class="teacher-section-title">STUDENT ACCESS CODE MANAGEMENT</div>
+      <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:16px;">The student access code is not required in this version. Students enter directly with their team name.</p>
+    </div>
+
+    <div class="teacher-section">
+      <div class="teacher-section-title">GAME SESSIONS — SCORE TRACKING</div>
+      <div id="teacher-sessions">
+        <p style="color:var(--text-muted);font-size:0.85rem;">No sessions recorded yet.</p>
+      </div>
+    </div>
+
+    <div class="teacher-section">
+      <div class="teacher-section-title">ANSWER KEYS</div>
+      <details style="margin-bottom:10px;">
+        <summary style="cursor:pointer;font-family:var(--font-mono);font-size:0.8rem;color:var(--primary);padding:8px 0;">▶ Level 1 — QCM Answer Keys</summary>
+        <div style="padding:12px;font-family:var(--font-mono);font-size:0.8rem;color:var(--text-muted);line-height:2;">
+          <strong style="color:var(--text);">Exercise 1:</strong> 1-B · 2-C · 3-D · 4-B · 5-C · 6-C · 7-C · 8-D · 9-C · 10-C · 11-C · 12-D<br>
+          <strong style="color:var(--text);">Exercise 2:</strong> 1-C · 2-C · 3-D · 4-C · 5-C · 6-D · 7-C · 8-D · 9-C · 10-D · 11-C · 12-D
+        </div>
+      </details>
+      <details style="margin-bottom:10px;">
+        <summary style="cursor:pointer;font-family:var(--font-mono);font-size:0.8rem;color:var(--warning);padding:8px 0;">▶ Level 2 — Reading Comprehension Keys</summary>
+        <div style="padding:12px;font-family:var(--font-mono);font-size:0.8rem;color:var(--text-muted);line-height:2;">
+          <strong style="color:var(--text);">Exercise 1 (T/F):</strong> 1-T · 2-F · 3-F · 4-T · 5-F · 6-T · 7-F · 8-T · 9-F · 10-F<br>
+          <strong style="color:var(--text);">Exercise 2 (QCM):</strong> 1-C · 2-D · 3-C · 4-B · 5-D · 6-C · 7-D · 8-D
+        </div>
+      </details>
+      <details style="margin-bottom:10px;">
+        <summary style="cursor:pointer;font-family:var(--font-mono);font-size:0.8rem;color:var(--secondary);padding:8px 0;">▶ Level 4 — Vocabulary Keys</summary>
+        <div style="padding:12px;font-family:var(--font-mono);font-size:0.8rem;color:var(--text-muted);line-height:2;">
+          <strong style="color:var(--text);">Exercise 1:</strong> PERIMETER · INCIDENT REPORT · PATROL · ACCESS CONTROL · TRESPASSER · SURVEILLANCE · VISITOR REGISTER · DETERRENCE · ACCESS BADGE · EMERGENCY PROCEDURE<br>
+          <strong style="color:var(--text);">Exercise 2:</strong> CHAIN OF COMMAND · HANDOVER · BRIEFING · LIABILITY · RESTRICTED AREA · SECURITY BREACH · CONFIDENTIALITY · RADIO · ESCORTING · PATROL ROUTE
+        </div>
+      </details>
+    </div>
+
+    <div class="teacher-section">
+      <div class="teacher-section-title">MASTER CODE</div>
+      <div style="font-family:var(--font-display);font-size:1.2rem;color:var(--success);letter-spacing:6px;text-align:center;padding:16px;background:rgba(0,255,136,0.05);border-radius:8px;border:1px solid rgba(0,255,136,0.2);">
+        YOU ARE THE EXPERTS TEAM
+      </div>
+    </div>
+
+    <button class="btn btn-secondary" onclick="showPage('page-home')" style="max-width:200px;margin-top:10px;">← Back</button>
+  </div>
+</div>
+
+<!-- ==================== PRINT REPORT ==================== -->
+<div id="print-area" style="display:none;"></div>
+
+<script>
+// ===================== STATE =====================
+const STATE = {
+  team: '',
+  members: [],
+  score: 0,
+  fragments: ['', '', '', '', ''],
+  fragmentsUnlocked: [false, false, false, false, false],
+  currentLevel: 0,
+  timers: {},
+  timerExpired: { l1: false, l4ex1: false, l4ex2: false },
+  l3: { used: [] },
+  l5: { used: [] },
+  log: []
+};
+
+const FRAGMENTS = ['YOU', 'ARE', 'THE', 'EXPERTS', 'TEAM !'];
+const FINAL_CODE = 'YOU ARE THE EXPERTS TEAM';
+
+// ===================== QCM DATA =====================
+const L1_Q1 = [
+  { q: "A person who enters a property without authorisation is guilty of:", opts: ["Loitering","Trespassing","Vandalism","Shoplifting"], ans: 1 },
+  { q: "The abbreviation CCTV stands for:", opts: ["Central Control and Traffic Verification","Certified Camera and Television View","Closed-Circuit Television","Controlled Communication and Tracking Vehicle"], ans: 2 },
+  { q: "An agent on duty must write a formal account of any unusual event. This document is called:", opts: ["A duty roster","A risk matrix","A briefing note","An incident report"], ans: 3 },
+  { q: "Which of the following best describes \"access control\"?", opts: ["Monitoring staff attendance","Regulating who is allowed to enter a specific area","Installing surveillance cameras","Checking vehicles at a toll booth"], ans: 1 },
+  { q: "A security officer notices a bag left unattended in the lobby. What should they do first?", opts: ["Ignore it and continue the patrol","Open the bag to check its contents","Follow the suspicious item procedure and alert the supervisor","Ask the nearest person if it belongs to them"], ans: 2 },
+  { q: "The term \"perimeter\" in a security context refers to:", opts: ["The number of guards on duty","The schedule of patrols","The outer boundary of a secured area","The emergency evacuation plan"], ans: 2 },
+  { q: "Which of the following is an example of a physical security measure?", opts: ["A firewall","An antivirus system","A turnstile at a building entrance","An encrypted email server"], ans: 2 },
+  { q: "An agent who is \"on call\" is:", opts: ["Currently on patrol","On a scheduled break","Writing an incident report","Available to respond if needed, but not actively on duty"], ans: 3 },
+  { q: "\"Deterrence\" in security means:", opts: ["Detecting a threat after it has occurred","Arresting a suspect on site","Discouraging potential offenders through visible security measures","Reviewing CCTV footage after an incident"], ans: 2 },
+  { q: "A visitor arrives at the reception desk without a prior appointment. The correct procedure is to:", opts: ["Refuse entry immediately","Allow entry if the visitor looks trustworthy","Ask for ID, check the visitor register and contact the relevant staff member","Issue a permanent badge"], ans: 2 },
+  { q: "Which of the following situations requires an immediate evacuation?", opts: ["A visitor forgets to sign the register","A CCTV camera goes offline","A fire alarm is triggered in the building","A staff member loses their access badge"], ans: 2 },
+  { q: "The term \"briefing\" in a security context refers to:", opts: ["A written monthly report sent to the client","A disciplinary meeting with a supervisor","An end-of-shift debrief with the team","A short meeting to inform agents about tasks, risks and instructions before a shift"], ans: 3 }
+];
+
+const L1_Q2 = [
+  { q: "Which document is used to record the details of everyone entering and leaving a site?", opts: ["A patrol log","A risk assessment","A visitor register","A duty roster"], ans: 2 },
+  { q: "A \"no-go zone\" on a site refers to:", opts: ["An area reserved for management only","A section under CCTV surveillance","A restricted area where access is strictly prohibited","A storage room for security equipment"], ans: 2 },
+  { q: "Which of the following best describes \"surveillance\"?", opts: ["Physically restraining a suspect","Writing a report after an incident","Escorting a visitor to their destination","Closely observing an area or person to detect suspicious activity"], ans: 3 },
+  { q: "An agent notices that an emergency exit is blocked by boxes. They should:", opts: ["Move the boxes themselves without reporting it","Ignore it as it is not their responsibility","Report it immediately to the supervisor and ensure the exit is cleared","Wait until the end of the shift to mention it"], ans: 2 },
+  { q: "The word \"liability\" in a security context means:", opts: ["The ability to respond quickly to an incident","A type of security equipment","Legal responsibility for damages or injuries that occur on site","A written agreement between a client and a security company"], ans: 2 },
+  { q: "Which of the following is an example of a security breach?", opts: ["A visitor signing the register at reception","A staff member using their own badge to enter","An agent completing a routine patrol","An unauthorised person accessing a restricted area"], ans: 3 },
+  { q: "A \"handover\" between two security shifts involves:", opts: ["Submitting a monthly activity report to the client","Signing a new employment contract","Briefing the incoming team on incidents, tasks and any ongoing issues","Handing over security equipment to the manager"], ans: 2 },
+  { q: "What does the term \"on patrol\" mean?", opts: ["Monitoring CCTV cameras from a control room","Responding to an active alarm","Writing up an end-of-shift report","Physically moving around a site to check for threats or irregularities"], ans: 3 },
+  { q: "A staff member reports that their access badge has been stolen. The first action should be to:", opts: ["Issue a new badge immediately without further checks","Ask the staff member to use a colleague's badge temporarily","Deactivate the stolen badge immediately and report the incident","Wait 24 hours in case the badge is found"], ans: 2 },
+  { q: "The term \"chain of command\" refers to:", opts: ["The list of emergency contacts for a site","The schedule of security patrols","The procedure for filing an incident report","The hierarchical structure defining who reports to whom"], ans: 3 },
+  { q: "Which of the following behaviours should be considered suspicious?", opts: ["A delivery driver arriving at the scheduled time with the correct paperwork","A staff member badging in at their usual time","A person lingering near a restricted entrance without identification","A visitor waiting at reception after signing in"], ans: 2 },
+  { q: "\"Confidentiality\" in a security role means:", opts: ["Sharing incident details with colleagues at the end of a shift","Publishing security procedures on the company website","Discussing client site details with family members","Not disclosing sensitive information about a site, client or incident to unauthorised persons"], ans: 3 }
+];
+
+const L2_TF = [
+  { q: "Officer Kowalski discovered the open door during a scheduled patrol.", ans: true },
+  { q: "The side entrance door had been forced open.", ans: false },
+  { q: "Officer Kowalski entered the building alone immediately after noticing the door.", ans: false },
+  { q: "A laptop was found to be missing from the storage room.", ans: true },
+  { q: "The site manager was contacted before midnight.", ans: false },
+  { q: "Both CCTV cameras had been switched off for over an hour.", ans: true },
+  { q: "The police arrived on site within 30 minutes of being called.", ans: false },
+  { q: "The storage room can only be accessed by three members of staff.", ans: true },
+  { q: "The incident was reported on a weekday.", ans: false },
+  { q: "The entrance door was left unsecured at the end of the intervention.", ans: false }
+];
+
+const L2_Q2 = [
+  { q: "Who first informed Officer Barnes about the incident?", opts: ["His supervisor at the control room","Another security officer","A member of the public","The site manager"], ans: 2 },
+  { q: "Where did the incident take place?", opts: ["At the main entrance","In the car park","On the ground floor","Near the food court on the first floor"], ans: 3 },
+  { q: "What was the condition of the casualty when Officer Barnes arrived?", opts: ["Unconscious and not breathing","Standing but in pain","Conscious but disoriented","Already being treated by a doctor"], ans: 2 },
+  { q: "How long did it take for the first aider to arrive?", opts: ["Immediately","Within three minutes","Five minutes","Ten minutes"], ans: 1 },
+  { q: "Why did Officer Barnes secure a perimeter around the casualty?", opts: ["To identify potential suspects in the crowd","To wait for the ambulance without moving","To film the scene for the CCTV record","To prevent crowding and ensure clear access for emergency services"], ans: 3 },
+  { q: "How long did it take for the ambulance to arrive after being called?", opts: ["4 minutes","8 minutes","12 minutes","20 minutes"], ans: 2 },
+  { q: "When did Officer Barnes submit his written report?", opts: ["The following morning","As soon as the ambulance arrived","At the start of his next shift","Before the end of his shift"], ans: 3 },
+  { q: "What conclusion was reached regarding suspicious activity?", opts: ["A suspect was identified and reported to police","The incident was linked to a previous case","Further investigation was requested","No suspicious activity was recorded"], ans: 3 }
+];
+
+const L4_V1 = [
+  { def: "The outer boundary of a secured area that must be monitored and protected.", ans: "PERIMETER" },
+  { def: "A formal written account describing an unusual or dangerous event that occurred on site.", ans: "INCIDENT REPORT" },
+  { def: "The process of regularly walking around a site to check for threats or irregularities.", ans: "PATROL" },
+  { def: "A system that regulates who is allowed to enter or exit a specific area.", ans: "ACCESS CONTROL" },
+  { def: "A person who enters a property without permission or legal right.", ans: "TRESPASSER" },
+  { def: "The use of cameras to monitor and record activity in a specific area.", ans: "SURVEILLANCE" },
+  { def: "A document listing all visitors entering and leaving a site, including times and purpose of visit.", ans: "VISITOR REGISTER" },
+  { def: "The visible presence of security measures designed to discourage potential offenders.", ans: "DETERRENCE" },
+  { def: "A small electronic device worn by staff to confirm their identity and grant access to secure areas.", ans: "ACCESS BADGE" },
+  { def: "An organised and immediate response to a dangerous or unexpected situation on site.", ans: "EMERGENCY PROCEDURE" }
+];
+
+const L4_V2 = [
+  { def: "The hierarchical structure that defines who is responsible for giving and receiving instructions within a security team.", ans: "CHAIN OF COMMAND" },
+  { def: "The process of passing information about ongoing tasks, incidents and site status from one security team to the next.", ans: "HANDOVER" },
+  { def: "A short meeting held before a shift begins to inform agents of tasks, risks and any specific instructions.", ans: "BRIEFING" },
+  { def: "The legal responsibility held by a person or organisation for damages or injuries occurring on their premises.", ans: "LIABILITY" },
+  { def: "An area of a site where access is strictly forbidden to unauthorised individuals.", ans: "RESTRICTED AREA" },
+  { def: "A situation in which an unauthorised person gains access to a secured area or system.", ans: "SECURITY BREACH" },
+  { def: "The obligation not to share sensitive information about a client, site or incident with unauthorised persons.", ans: "CONFIDENTIALITY" },
+  { def: "A portable two-way communication device used by security officers to stay in contact with the control room.", ans: "RADIO" },
+  { def: "The act of accompanying a visitor or unauthorised individual through a secure area to ensure safety and compliance.", ans: "ESCORTING" },
+  { def: "A pre-planned route followed by a security officer during a check of the site.", ans: "PATROL ROUTE" }
+];
+
+// ===================== RENDER HELPERS =====================
+function renderQCM(questions, containerId) {
+  const c = document.getElementById(containerId);
+  c.innerHTML = '';
+  questions.forEach((q, i) => {
+    const div = document.createElement('div');
+    div.className = 'question-block';
+    div.innerHTML = `<div class="question-text">${i+1}. ${q.q}</div>
+    <div class="options-grid">${q.opts.map((o, j) => `
+      <label class="option-label" id="opt-${containerId}-${i}-${j}">
+        <input type="radio" name="q${containerId}${i}" value="${j}"> ${String.fromCharCode(65+j)}) ${o}
+      </label>`).join('')}
+    </div>`;
+    c.appendChild(div);
+  });
+}
+
+function renderTF(questions, containerId) {
+  const c = document.getElementById(containerId);
+  c.innerHTML = '';
+  questions.forEach((q, i) => {
+    c.innerHTML += `<div class="tf-block">
+      <div class="tf-question">${i+1}. ${q.q}</div>
+      <div class="tf-buttons">
+        <button class="tf-btn" id="tf-${i}-T" onclick="selectTF(${i},'T')">TRUE</button>
+        <button class="tf-btn" id="tf-${i}-F" onclick="selectTF(${i},'F')">FALSE</button>
+      </div>
+    </div>`;
+  });
+}
+
+function selectTF(i, val) {
+  document.getElementById(`tf-${i}-T`).className = 'tf-btn' + (val==='T' ? ' selected-true' : '');
+  document.getElementById(`tf-${i}-F`).className = 'tf-btn' + (val==='F' ? ' selected-false' : '');
+}
+
+function renderVocab(vocabs, containerId) {
+  const c = document.getElementById(containerId);
+  c.innerHTML = '';
+  vocabs.forEach((v, i) => {
+    c.innerHTML += `<div class="vocab-block">
+      <div class="vocab-num">${i+1}.</div>
+      <div class="vocab-def">
+        <div class="vocab-def-text">${v.def}</div>
+        <input type="text" class="vocab-input" id="vocab-${containerId}-${i}" placeholder="Type the security term..." autocomplete="off">
+      </div>
+    </div>`;
+  });
+}
+
+// ===================== SCORING =====================
+function scoreQCM(questions, containerId) {
+  let correct = 0;
+  questions.forEach((q, i) => {
+    const selected = document.querySelector(`input[name="q${containerId}${i}"]:checked`);
+    const val = selected ? parseInt(selected.value) : -1;
+    q.opts.forEach((_, j) => {
+      const lbl = document.getElementById(`opt-${containerId}-${i}-${j}`);
+      if (lbl) {
+        lbl.style.pointerEvents = 'none';
+        if (j === q.ans) lbl.classList.add('correct');
+        else if (j === val && val !== q.ans) lbl.classList.add('wrong');
+      }
+    });
+    if (val === q.ans) correct++;
+  });
+  return correct;
+}
+
+function scoreTF() {
+  let correct = 0;
+  L2_TF.forEach((q, i) => {
+    const tBtn = document.getElementById(`tf-${i}-T`);
+    const fBtn = document.getElementById(`tf-${i}-F`);
+    const selected = tBtn.classList.contains('selected-true') ? true : fBtn.classList.contains('selected-false') ? false : null;
+    if (selected === null) { tBtn.disabled = true; fBtn.disabled = true; return; }
+    const isCorrect = selected === q.ans;
+    if (isCorrect) {
+      correct++;
+      (q.ans ? tBtn : fBtn).classList.add('correct');
+    } else {
+      (selected ? tBtn : fBtn).classList.add('wrong');
+      (q.ans ? tBtn : fBtn).classList.add('correct');
+    }
+    tBtn.disabled = true; fBtn.disabled = true;
+  });
+  return correct;
+}
+
+function scoreVocab(vocabs, containerId) {
+  let correct = 0;
+  vocabs.forEach((v, i) => {
+    const inp = document.getElementById(`vocab-${containerId}-${i}`);
+    if (!inp) return;
+    const val = inp.value.trim().toUpperCase();
+    inp.disabled = true;
+    if (val === v.ans) { inp.classList.add('correct'); correct++; }
+    else { inp.classList.add('wrong'); inp.placeholder = v.ans; }
+  });
+  return correct;
+}
+
+function showResult(panelId, scoreId, labelId, ptsId, indiceId, score, total, threshold, pts_pass, pts_fail, fragmentIdx, advanceId, nextId, logLabel) {
+  const pass = score >= threshold;
+  const pts = pass ? pts_pass : pts_fail;
+  STATE.score += pts;
+  updateHUD();
+  STATE.log.push({ label: logLabel, score: `${score}/${total}`, points: pts });
+
+  const panel = document.getElementById(panelId);
+  panel.classList.add('show');
+  document.getElementById(scoreId).textContent = `${score}/${total}`;
+  document.getElementById(scoreId).className = 'result-score-big ' + (pass ? 'pass' : 'fail');
+  document.getElementById(labelId).textContent = pass ? '✓ ASSESSMENT PASSED' : '✗ ASSESSMENT FAILED';
+  const ptsEl = document.getElementById(ptsId);
+  ptsEl.className = 'points-change ' + (pts >= 0 ? 'gain' : 'loss');
+  ptsEl.textContent = (pts >= 0 ? '+' : '') + pts + ' POINTS';
+
+  if (fragmentIdx !== null) {
+    STATE.fragmentsUnlocked[fragmentIdx] = true;
+    STATE.fragments[fragmentIdx] = FRAGMENTS[fragmentIdx];
+    updateHUD();
+    document.getElementById(indiceId).innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT ${fragmentIdx+1} RECOVERED</div><div class="indice-word">${FRAGMENTS[fragmentIdx]}</div></div>`;
+  }
+
+  if (pass && advanceId) {
+    document.getElementById(advanceId).style.display = 'flex';
+  } else if (!pass && nextId) {
+    document.getElementById(nextId).style.display = 'flex';
+  } else if (!pass && !nextId && advanceId) {
+    document.getElementById(advanceId).style.display = 'flex';
+  }
+
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ===================== TIMERS =====================
+function startTimer(seconds, displayId, progressId, expiredKey, onExpire) {
+  if (STATE.timers[displayId]) clearInterval(STATE.timers[displayId]);
+  const total = seconds;
+  let remaining = seconds;
+  function tick() {
+    const m = Math.floor(remaining / 60);
+    const s = remaining % 60;
+    const disp = document.getElementById(displayId);
+    const prog = document.getElementById(progressId);
+    if (!disp) return;
+    disp.textContent = `${m}:${s.toString().padStart(2,'0')}`;
+    const pct = (remaining / total) * 100;
+    prog.style.width = pct + '%';
+    if (remaining <= 60) { disp.className = 'timer-display danger'; prog.style.background = 'var(--danger)'; }
+    else if (remaining <= 120) { disp.className = 'timer-display warning'; prog.style.background = 'var(--warning)'; }
+    if (remaining <= 0) {
+      clearInterval(STATE.timers[displayId]);
+      if (expiredKey) STATE.timerExpired[expiredKey] = true;
+      if (onExpire) onExpire();
+    }
+    remaining--;
+  }
+  tick();
+  STATE.timers[displayId] = setInterval(tick, 1000);
+}
+
+function stopTimer(displayId) {
+  if (STATE.timers[displayId]) { clearInterval(STATE.timers[displayId]); delete STATE.timers[displayId]; }
+}
+
+// ===================== HUD =====================
+function updateHUD() {
+  document.getElementById('hud-team-name').textContent = STATE.team || 'TEAM —';
+  document.getElementById('hud-score').textContent = STATE.score;
+  const frag = document.getElementById('hud-fragments');
+  frag.innerHTML = '';
+  for (let i = 0; i < 5; i++) {
+    const d = document.createElement('div');
+    d.className = 'fragment-dot' + (STATE.fragmentsUnlocked[i] ? ' unlocked' : '');
+    d.title = STATE.fragmentsUnlocked[i] ? FRAGMENTS[i] : `Fragment ${i+1}`;
+    frag.appendChild(d);
+  }
+}
+
+// ===================== LOGIN =====================
+function teacherLogin() {
+  const code = document.getElementById('teacher-code-input').value;
+  if (code === '0504') {
+    showPage('page-teacher');
+    loadTeacherSessions();
+  } else {
+    showAlert('teacher-error', 'ACCESS DENIED — Invalid code.', 'error');
+  }
+}
+
+function studentLogin() {
+  const name = document.getElementById('team-name-input').value.trim();
+  if (!name) { showAlert('student-error', 'Please enter a team name.', 'error'); return; }
+  const inputs = document.querySelectorAll('.member-input');
+  const members = [];
+  inputs.forEach(i => { if (i.value.trim()) members.push(i.value.trim().toUpperCase()); });
+  if (members.length < 2) { showAlert('student-error', 'Please enter at least 2 team members.', 'error'); return; }
+  STATE.team = name;
+  STATE.members = members;
+  STATE.score = 0;
+  STATE.fragments = ['', '', '', '', ''];
+  STATE.fragmentsUnlocked = [false, false, false, false, false];
+  STATE.log = [];
+  STATE.l3.used = [];
+  STATE.l5.used = [];
+  updateHUD();
+  document.getElementById('hud').classList.add('visible');
+  showPage('page-intro');
+}
+
+function showAlert(id, msg, type) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.className = `alert alert-${type} show`;
+}
+
+// ===================== NAVIGATION =====================
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function goToLevel(n) {
+  STATE.currentLevel = n;
+  updateHUD();
+  if (n === 1) {
+    renderQCM(L1_Q1, 'l1-q1-container');
+    renderQCM(L1_Q2, 'l1-q2-container');
+    showPage('page-level1');
+    startTimer(420, 'l1-td1', 'l1-tp1', 'l1', () => {
+      showAlert('l1-ex1-result', '⏱ Time expired! -10 points penalty.', 'warning');
+      STATE.score -= 10;
+      updateHUD();
+    });
+  } else if (n === 2) {
+    renderTF(L2_TF, 'l2-tf-container');
+    renderQCM(L2_Q2, 'l2-q2-container');
+    showPage('page-level2');
+  } else if (n === 3) {
+    drawL3Agent(1);
+    showPage('page-level3');
+  } else if (n === 4) {
+    renderVocab(L4_V1, 'l4-v1-container');
+    renderVocab(L4_V2, 'l4-v2-container');
+    showPage('page-level4');
+    startTimer(480, 'l4-td1', 'l4-tp1', 'l4ex1', () => {});
+  } else if (n === 5) {
+    drawL5Agent(1);
+    showPage('page-level5');
+  }
+}
+
+function goToFinal() {
+  showPage('page-final');
+  const disp = document.getElementById('fragments-display');
+  disp.innerHTML = '';
+  FRAGMENTS.forEach((f, i) => {
+    disp.innerHTML += `<div class="fragment-chip"><div class="fragment-chip-num">FRAGMENT ${i+1}</div><div class="fragment-chip-word">${STATE.fragmentsUnlocked[i] ? f : '????'}</div></div>`;
+  });
+}
+
+// ===================== LEVEL 1 =====================
+function submitL1Ex1() {
+  stopTimer('l1-td1');
+  const score = scoreQCM(L1_Q1, 'l1-q1-container');
+  document.getElementById('l1-ex1-submit').disabled = true;
+  const timerPenalty = STATE.timerExpired.l1;
+  if (timerPenalty) { STATE.score -= 0; } // already deducted in timer
+  showResult('l1-ex1-result','l1-ex1-score','l1-ex1-label','l1-ex1-pts','l1-ex1-indice',
+    score, 12, 8, 50, -10, null, 'l1-ex1-advance', 'l1-ex1-next', 'L1 Exercise 1');
+  if (score >= 8) {
+    STATE.fragmentsUnlocked[0] = true; STATE.fragments[0] = FRAGMENTS[0]; updateHUD();
+    document.getElementById('l1-ex1-indice').innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 1 RECOVERED</div><div class="indice-word">${FRAGMENTS[0]}</div></div>`;
+  }
+}
+
+function showL1Ex2() {
+  document.getElementById('l1-ex2').style.display = 'block';
+  document.getElementById('l1-ex2').scrollIntoView({ behavior: 'smooth' });
+}
+
+function submitL1Ex2() {
+  const score = scoreQCM(L1_Q2, 'l1-q2-container');
+  const pass = score >= 8;
+  const pts = pass ? 50 : -10;
+  STATE.score += pts; updateHUD();
+  STATE.fragmentsUnlocked[0] = true; STATE.fragments[0] = FRAGMENTS[0]; updateHUD();
+  STATE.log.push({ label: 'L1 Exercise 2', score: `${score}/12`, points: pts });
+  const panel = document.getElementById('l1-ex2-result');
+  panel.classList.add('show');
+  document.getElementById('l1-ex2-score').textContent = `${score}/12`;
+  document.getElementById('l1-ex2-score').className = 'result-score-big ' + (pass ? 'pass' : 'fail');
+  document.getElementById('l1-ex2-label').textContent = pass ? '✓ ASSESSMENT PASSED' : '✗ ASSESSMENT FAILED';
+  const ptsEl = document.getElementById('l1-ex2-pts');
+  ptsEl.className = 'points-change ' + (pts >= 0 ? 'gain' : 'loss');
+  ptsEl.textContent = (pts >= 0 ? '+' : '') + pts + ' POINTS';
+  document.getElementById('l1-ex2-indice').innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 1 RECOVERED</div><div class="indice-word">${FRAGMENTS[0]}</div></div>`;
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ===================== LEVEL 2 =====================
+function submitL2Ex1() {
+  const score = scoreTF();
+  const pass = score >= 8;
+  const pts = pass ? 50 : -10;
+  STATE.score += pts; updateHUD();
+  STATE.log.push({ label: 'L2 Exercise 1', score: `${score}/10`, points: pts });
+  const panel = document.getElementById('l2-ex1-result');
+  panel.classList.add('show');
+  document.getElementById('l2-ex1-score').textContent = `${score}/10`;
+  document.getElementById('l2-ex1-score').className = 'result-score-big ' + (pass ? 'pass' : 'fail');
+  document.getElementById('l2-ex1-label').textContent = pass ? '✓ REPORT VERIFIED' : '✗ INCONSISTENCIES FOUND';
+  const ptsEl = document.getElementById('l2-ex1-pts');
+  ptsEl.className = 'points-change ' + (pts >= 0 ? 'gain' : 'loss');
+  ptsEl.textContent = (pts >= 0 ? '+' : '') + pts + ' POINTS';
+  if (pass) {
+    STATE.fragmentsUnlocked[1] = true; STATE.fragments[1] = FRAGMENTS[1]; updateHUD();
+    document.getElementById('l2-ex1-indice').innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 2 RECOVERED</div><div class="indice-word">${FRAGMENTS[1]}</div></div>`;
+    document.getElementById('l2-ex1-advance').style.display = 'flex';
+  } else {
+    document.getElementById('l2-ex1-next').style.display = 'flex';
+  }
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function showL2Ex2() {
+  document.getElementById('l2-ex2').style.display = 'block';
+  document.getElementById('l2-ex2').scrollIntoView({ behavior: 'smooth' });
+}
+
+function submitL2Ex2() {
+  const score = scoreQCM(L2_Q2, 'l2-q2-container');
+  const pass = score >= 8;
+  const pts = pass ? 50 : -10;
+  STATE.score += pts; updateHUD();
+  STATE.fragmentsUnlocked[1] = true; STATE.fragments[1] = FRAGMENTS[1]; updateHUD();
+  STATE.log.push({ label: 'L2 Exercise 2', score: `${score}/8`, points: pts });
+  const panel = document.getElementById('l2-ex2-result');
+  panel.classList.add('show');
+  document.getElementById('l2-ex2-score').textContent = `${score}/8`;
+  document.getElementById('l2-ex2-score').className = 'result-score-big ' + (pass ? 'pass' : 'fail');
+  document.getElementById('l2-ex2-label').textContent = pass ? '✓ REPORT VERIFIED' : '✗ ANALYSIS INCOMPLETE';
+  const ptsEl = document.getElementById('l2-ex2-pts');
+  ptsEl.className = 'points-change ' + (pts >= 0 ? 'gain' : 'loss');
+  ptsEl.textContent = (pts >= 0 ? '+' : '') + pts + ' POINTS';
+  document.getElementById('l2-ex2-indice').innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 2 RECOVERED</div><div class="indice-word">${FRAGMENTS[1]}</div></div>`;
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ===================== AGENT DRAW =====================
+function drawAgent(usedList, displayId) {
+  const available = STATE.members.filter(m => !usedList.includes(m));
+  const pool = available.length > 0 ? available : STATE.members;
+  const chosen = pool[Math.floor(Math.random() * pool.length)];
+  if (!usedList.includes(chosen)) usedList.push(chosen);
+  document.getElementById(displayId).textContent = chosen;
+  return chosen;
+}
+
+function drawL3Agent(n) { drawAgent(STATE.l3.used, `l3-agent${n}`); }
+function drawL5Agent(n) { drawAgent(STATE.l5.used, `l5-agent${n}`); }
+
+// ===================== LEVEL 3 =====================
+function submitL3Ex1() {
+  const score = parseInt(document.getElementById('l3-score1').value);
+  if (!score || score < 1 || score > 10) { alert('Please enter a valid score between 1 and 10.'); return; }
+  const pass = score >= 8;
+  const pts = pass ? 50 : -10;
+  STATE.score += pts; updateHUD();
+  STATE.log.push({ label: 'L3 Exercise 1 (Oral)', score: `${score}/10`, points: pts });
+  const panel = document.getElementById('l3-ex1-result');
+  panel.classList.add('show');
+  document.getElementById('l3-ex1-score').textContent = `${score}/10`;
+  document.getElementById('l3-ex1-score').className = 'result-score-big ' + (pass ? 'pass' : 'fail');
+  document.getElementById('l3-ex1-label').textContent = pass ? '✓ SITUATION HANDLED' : '✗ PERFORMANCE INSUFFICIENT';
+  const ptsEl = document.getElementById('l3-ex1-pts');
+  ptsEl.className = 'points-change ' + (pts >= 0 ? 'gain' : 'loss');
+  ptsEl.textContent = (pts >= 0 ? '+' : '') + pts + ' POINTS';
+  if (pass) {
+    STATE.fragmentsUnlocked[2] = true; STATE.fragments[2] = FRAGMENTS[2]; updateHUD();
+    document.getElementById('l3-ex1-indice').innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 3 RECOVERED</div><div class="indice-word">${FRAGMENTS[2]}</div></div>`;
+    document.getElementById('l3-ex1-advance').style.display = 'flex';
+  } else {
+    document.getElementById('l3-ex1-next').style.display = 'flex';
+  }
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function showL3Ex2() {
+  drawL3Agent(2);
+  document.getElementById('l3-ex2').style.display = 'block';
+  document.getElementById('l3-ex2').scrollIntoView({ behavior: 'smooth' });
+}
+
+function submitL3Ex2() {
+  const score = parseInt(document.getElementById('l3-score2').value);
+  if (!score || score < 1 || score > 10) { alert('Please enter a valid score between 1 and 10.'); return; }
+  const pass = score >= 7;
+  const pts = pass ? 50 : -10;
+  STATE.score += pts; updateHUD();
+  STATE.fragmentsUnlocked[2] = true; STATE.fragments[2] = FRAGMENTS[2]; updateHUD();
+  STATE.log.push({ label: 'L3 Exercise 2 (Oral)', score: `${score}/10`, points: pts });
+  const panel = document.getElementById('l3-ex2-result');
+  panel.classList.add('show');
+  document.getElementById('l3-ex2-score').textContent = `${score}/10`;
+  document.getElementById('l3-ex2-score').className = 'result-score-big ' + (pass ? 'pass' : 'fail');
+  document.getElementById('l3-ex2-label').textContent = pass ? '✓ SITUATION HANDLED' : '✗ PERFORMANCE BELOW STANDARD';
+  const ptsEl = document.getElementById('l3-ex2-pts');
+  ptsEl.className = 'points-change ' + (pts >= 0 ? 'gain' : 'loss');
+  ptsEl.textContent = (pts >= 0 ? '+' : '') + pts + ' POINTS';
+  document.getElementById('l3-ex2-indice').innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 3 RECOVERED</div><div class="indice-word">${FRAGMENTS[2]}</div></div>`;
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ===================== LEVEL 4 =====================
+function submitL4Ex1() {
+  stopTimer('l4-td1');
+  const score = scoreVocab(L4_V1, 'l4-v1-container');
+  const pass = score >= 8;
+  const pts = pass ? 50 : -10;
+  STATE.score += pts; updateHUD();
+  STATE.log.push({ label: 'L4 Exercise 1 (Vocabulary)', score: `${score}/10`, points: pts });
+  const panel = document.getElementById('l4-ex1-result');
+  panel.classList.add('show');
+  document.getElementById('l4-ex1-score').textContent = `${score}/10`;
+  document.getElementById('l4-ex1-score').className = 'result-score-big ' + (pass ? 'pass' : 'fail');
+  document.getElementById('l4-ex1-label').textContent = pass ? '✓ CIPHER CRACKED' : '✗ DECRYPTION INCOMPLETE';
+  const ptsEl = document.getElementById('l4-ex1-pts');
+  ptsEl.className = 'points-change ' + (pts >= 0 ? 'gain' : 'loss');
+  ptsEl.textContent = (pts >= 0 ? '+' : '') + pts + ' POINTS';
+  if (pass) {
+    STATE.fragmentsUnlocked[3] = true; STATE.fragments[3] = FRAGMENTS[3]; updateHUD();
+    document.getElementById('l4-ex1-indice').innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 4 RECOVERED</div><div class="indice-word">${FRAGMENTS[3]}</div></div>`;
+    document.getElementById('l4-ex1-advance').style.display = 'flex';
+  } else {
+    document.getElementById('l4-ex1-next').style.display = 'flex';
+  }
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function showL4Ex2() {
+  document.getElementById('l4-ex2').style.display = 'block';
+  document.getElementById('l4-ex2').scrollIntoView({ behavior: 'smooth' });
+  startTimer(480, 'l4-td2', 'l4-tp2', 'l4ex2', () => {});
+}
+
+function submitL4Ex2() {
+  stopTimer('l4-td2');
+  const score = scoreVocab(L4_V2, 'l4-v2-container');
+  const pass = score >= 8;
+  const pts = pass ? 50 : -10;
+  STATE.score += pts; updateHUD();
+  STATE.fragmentsUnlocked[3] = true; STATE.fragments[3] = FRAGMENTS[3]; updateHUD();
+  STATE.log.push({ label: 'L4 Exercise 2 (Vocabulary)', score: `${score}/10`, points: pts });
+  const panel = document.getElementById('l4-ex2-result');
+  panel.classList.add('show');
+  document.getElementById('l4-ex2-score').textContent = `${score}/10`;
+  document.getElementById('l4-ex2-score').className = 'result-score-big ' + (pass ? 'pass' : 'fail');
+  document.getElementById('l4-ex2-label').textContent = pass ? '✓ CIPHER CRACKED' : '✗ DECRYPTION INCOMPLETE';
+  const ptsEl = document.getElementById('l4-ex2-pts');
+  ptsEl.className = 'points-change ' + (pts >= 0 ? 'gain' : 'loss');
+  ptsEl.textContent = (pts >= 0 ? '+' : '') + pts + ' POINTS';
+  document.getElementById('l4-ex2-indice').innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 4 RECOVERED</div><div class="indice-word">${FRAGMENTS[3]}</div></div>`;
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ===================== LEVEL 5 =====================
+function submitL5Ex(exNum, scoreInputId, panelId, scoreId, labelId, ptsId, indiceId, threshold, nextFn, advanceId, nextId) {
+  const score = parseInt(document.getElementById(scoreInputId).value);
+  if (!score || score < 1 || score > 10) { alert('Please enter a valid score between 1 and 10.'); return; }
+  const pass = score >= threshold;
+  const pts = pass ? 50 : -10;
+  STATE.score += pts; updateHUD();
+  STATE.log.push({ label: `L5 Exercise ${exNum} (Oral Report)`, score: `${score}/10`, points: pts });
+  const panel = document.getElementById(panelId);
+  panel.classList.add('show');
+  document.getElementById(scoreId).textContent = `${score}/10`;
+  document.getElementById(scoreId).className = 'result-score-big ' + (pass ? 'pass' : 'fail');
+  document.getElementById(labelId).textContent = pass ? '✓ ACCOUNT ACCEPTED' : '✗ ACCOUNT INSUFFICIENT';
+  const ptsEl = document.getElementById(ptsId);
+  ptsEl.className = 'points-change ' + (pts >= 0 ? 'gain' : 'loss');
+  ptsEl.textContent = (pts >= 0 ? '+' : '') + pts + ' POINTS';
+  if (pass) {
+    STATE.fragmentsUnlocked[4] = true; STATE.fragments[4] = FRAGMENTS[4]; updateHUD();
+    document.getElementById(indiceId).innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 5 RECOVERED</div><div class="indice-word">${FRAGMENTS[4]}</div></div>`;
+    document.getElementById(advanceId).style.display = 'flex';
+  } else if (nextId) {
+    document.getElementById(nextId).style.display = 'flex';
+  } else {
+    // ex3 failed — still unlock
+    STATE.fragmentsUnlocked[4] = true; STATE.fragments[4] = FRAGMENTS[4]; updateHUD();
+    document.getElementById(indiceId).innerHTML = `<div class="indice-reveal"><div class="indice-label">FRAGMENT 5 RECOVERED</div><div class="indice-word">${FRAGMENTS[4]}</div></div>`;
+    document.getElementById(advanceId).style.display = 'flex';
+  }
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function submitL5Ex1() {
+  submitL5Ex(1, 'l5-score1', 'l5-ex1-result', 'l5-ex1-score', 'l5-ex1-label', 'l5-ex1-pts', 'l5-ex1-indice', 8, showL5Ex2, 'l5-ex1-advance', 'l5-ex1-next');
+}
+function showL5Ex2() {
+  drawL5Agent(2);
+  document.getElementById('l5-ex2').style.display = 'block';
+  document.getElementById('l5-ex2').scrollIntoView({ behavior: 'smooth' });
+}
+function submitL5Ex2() {
+  submitL5Ex(2, 'l5-score2', 'l5-ex2-result', 'l5-ex2-score', 'l5-ex2-label', 'l5-ex2-pts', 'l5-ex2-indice', 7, showL5Ex3, 'l5-ex2-advance', 'l5-ex2-next');
+}
+function showL5Ex3() {
+  drawL5Agent(3);
+  document.getElementById('l5-ex3').style.display = 'block';
+  document.getElementById('l5-ex3').scrollIntoView({ behavior: 'smooth' });
+}
+function submitL5Ex3() {
+  submitL5Ex(3, 'l5-score3', 'l5-ex3-result', 'l5-ex3-score', 'l5-ex3-label', 'l5-ex3-pts', 'l5-ex3-indice', 7, null, 'l5-ex3-advance', null);
+}
+
+// ===================== FINAL CODE =====================
+function submitFinalCode() {
+  const input = document.getElementById('final-code-input').value.trim().toUpperCase();
+  if (input === FINAL_CODE.toUpperCase()) {
+    document.getElementById('final-code-input').parentElement.parentElement.style.display = 'none';
+    document.getElementById('victory-screen').style.display = 'block';
+    document.getElementById('final-score-num').textContent = STATE.score;
+    saveSession();
+  } else {
+    showAlert('final-error', '✗ INCORRECT CODE — Check your fragments and try again.', 'error');
+  }
+}
+
+// ===================== SESSION SAVE =====================
+function saveSession() {
+  const sessions = JSON.parse(localStorage.getItem('ew_sessions') || '[]');
+  sessions.push({
+    team: STATE.team,
+    members: STATE.members.join(', '),
+    score: STATE.score,
+    date: new Date().toLocaleString('fr-FR'),
+    log: STATE.log
+  });
+  localStorage.setItem('ew_sessions', JSON.stringify(sessions));
+}
+
+function loadTeacherSessions() {
+  const sessions = JSON.parse(localStorage.getItem('ew_sessions') || '[]');
+  const container = document.getElementById('teacher-sessions');
+  if (sessions.length === 0) { container.innerHTML = '<p style="color:var(--text-muted);font-size:0.85rem;">No sessions recorded yet.</p>'; return; }
+  let html = `<table class="teams-table"><thead><tr><th>Date</th><th>Team</th><th>Members</th><th>Score</th></tr></thead><tbody>`;
+  sessions.slice().reverse().forEach(s => {
+    html += `<tr><td>${s.date}</td><td>${s.team}</td><td>${s.members}</td><td style="color:var(--success)">${s.score} pts</td></tr>`;
+  });
+  html += '</tbody></table>';
+  container.innerHTML = html;
+}
+
+// ===================== PRINT REPORT =====================
+function printReport() {
+  const w = window.open('', '_blank');
+  const rows = STATE.log.map(e => `<tr><td>${e.label}</td><td>${e.score}</td><td style="color:${e.points>=0?'green':'red'}">${e.points>=0?'+':''}${e.points}</td></tr>`).join('');
+  w.document.write(`<!DOCTYPE html><html><head><title>Debrief — ${STATE.team}</title>
+  <style>body{font-family:Arial,sans-serif;padding:30px;max-width:700px;margin:0 auto}
+  h1{color:#c00;font-size:1.4rem;margin-bottom:4px}
+  h2{color:#333;font-size:1rem;margin-bottom:20px}
+  table{width:100%;border-collapse:collapse;margin-bottom:20px}
+  th,td{padding:8px 10px;border:1px solid #ddd;text-align:left;font-size:0.85rem}
+  th{background:#f5f5f5;font-weight:bold}
+  .total{font-size:1.2rem;font-weight:bold;color:#c00}
+  .frags{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+  .frag{padding:8px 14px;background:#f0f8f0;border:1px solid #090;border-radius:4px;font-weight:bold;color:#060}
+  </style></head><body>
+  <h1>EXPERTS WANTED — DEBRIEF REPORT</h1>
+  <h2>SecureForce Ltd. — Mission Debrief</h2>
+  <p><strong>Team:</strong> ${STATE.team} &nbsp;|&nbsp; <strong>Members:</strong> ${STATE.members.join(', ')}</p>
+  <p><strong>Date:</strong> ${new Date().toLocaleString('fr-FR')}</p>
+  <h3 style="margin:20px 0 10px">EXERCISE LOG</h3>
+  <table><thead><tr><th>Exercise</th><th>Score</th><th>Points</th></tr></thead><tbody>${rows}</tbody></table>
+  <h3>FRAGMENTS RECOVERED</h3>
+  <div class="frags">${FRAGMENTS.map((f,i)=>`<div class="frag">${STATE.fragmentsUnlocked[i]?f:'???'}</div>`).join('')}</div>
+  <p class="total">TOTAL SCORE : ${STATE.score} POINTS</p>
+  <br><p style="font-size:0.75rem;color:#999">Generated by Experts Wanted — SecureForce Ltd. &copy; 2024</p>
+  </body></html>`);
+  w.document.close();
+  w.print();
+}
+
+// ===================== INIT =====================
+document.querySelectorAll('.member-input').forEach(inp => {
+  inp.addEventListener('input', function() {
+    this.value = this.value.toUpperCase().replace(/[^A-Z\-]/g, '');
+  });
+});
+</script>
+</body>
+</html>
