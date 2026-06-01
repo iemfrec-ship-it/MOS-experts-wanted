@@ -179,8 +179,9 @@ body::before {
   font-weight: 700;
   letter-spacing: 3px;
   margin-bottom: 20px;
-  color: var(--primary);
+  color: #ffffff;
 }
+.home-card.student .input-label { color: rgba(255,255,255,0.8); }
 .home-card.teacher .card-title { color: var(--secondary); }
 
 /* ===================== FORMS ===================== */
@@ -189,23 +190,24 @@ body::before {
   display: block;
   font-family: var(--font-mono);
   font-size: 0.7rem;
-  color: var(--text-muted);
+  color: rgba(255,255,255,0.7);
   letter-spacing: 2px;
   text-transform: uppercase;
   margin-bottom: 6px;
 }
 .input-field {
   width: 100%;
-  background: rgba(255,255,255,0.05);
+  background: rgba(0,0,0,0.25);
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 10px 14px;
-  color: var(--text);
+  color: #ffffff;
   font-family: var(--font-mono);
   font-size: 0.9rem;
   transition: all 0.2s;
   outline: none;
 }
+.input-field::placeholder { color: rgba(255,255,255,0.4); }
 .input-field:focus { border-color: var(--primary); background: rgba(0,212,255,0.05); box-shadow: 0 0 0 3px rgba(0,212,255,0.1); }
 
 .members-grid { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
@@ -1061,7 +1063,7 @@ body::before {
             <label class="input-label">Team Name</label>
             <input type="text" id="team-name-input" class="input-field" placeholder="e.g. Alpha Squad" maxlength="30">
           </div>
-          <div class="input-label" style="margin-bottom:8px;">Team Members (ID format: CA-IE)</div>
+          <div class="input-label" style="margin-bottom:8px;color:rgba(255,255,255,0.8);">Team Members (ID format: CA-IE)</div>
           <div class="members-grid" id="members-grid">
             <input type="text" class="input-field member-input" placeholder="Member 1 (e.g. CA-IE)" maxlength="10" style="text-transform:uppercase">
             <input type="text" class="input-field member-input" placeholder="Member 2" maxlength="10" style="text-transform:uppercase">
